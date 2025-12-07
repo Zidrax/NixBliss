@@ -3,19 +3,30 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  # --- Базовые настройки системы ---
   nixpkgs.config.allowUnfree = true;
+  networking.hostName = "nixos";
+
+  # --- Time and locale ---
+  time.timeZone = "Europe/Moscow";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" ];
+  console = {
+    font = "Lat2-Terminus16";
+    useXkbConfig = true;
+  };
 
   # Включите поддержку NTFS в ядре
   boot.supportedFilesystems = [ "ntfs" ];
 
   boot.loader.systemd-boot.enable = false;
 
-boot.loader.grub = {
-  enable = true;
-  efiSupport = true;
-  useOSProber = true;
-  device = "nodev"; # обязательно, если EFI
-};
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    useOSProber = true;
+    device = "nodev"; # обязательно, если EFI
+  };
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
@@ -24,17 +35,6 @@ boot.loader.grub = {
       KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="373b", MODE="0666", GROUP="wheel"
     '';
 
-
-  networking.hostName = "nixos";
-
-  # Time and locale
-  time.timeZone = "Europe/Moscow";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" ];
-  console = {
-    font = "Lat2-Terminus16";
-    useXkbConfig = true;
-  };
 
   programs.hyprland = {
     # Install the packages from nixpkgs
@@ -161,87 +161,40 @@ fonts = {
   };
 };
 
-  # System packages
+  # --- System Packages ---
   environment.systemPackages = with pkgs; [
-    vim-full
-    wget
-    firefox
-    git
-    curl
-    vscode
-    nvidia-vaapi-driver
-    discord
-    steam
-    telegram-desktop
-    obsidian
-    obs-studio
-    gimp
-    wine
-    arduino-ide
-    xorg.xhost
-    direnv
-    unzip
-    onedrive
-    whatsie
-    waydroid
-    teamspeak3
-    libreoffice
-    os-prober
-    zoom-us
-    btop
-    micro
-    gnome-tweaks
-    piper
-    libratbag
-    prismlauncher
-    pavucontrol
-    chromium
-    usbutils
-    virtualbox
-    opentabletdriver
-    rofi-wayland
-    rofi-calc
-    rofi-emoji
-    kitty
-    nautilus              # файловый менеджер
-    waybar
-    networkmanagerapplet
-    blueman           # GUI менеджер Bluetooth
-    bluez              # Bluetooth утилиты
-    bluez-tools        # Дополнительные инструменты
-    grim      # скриншоты
-    slurp     # выбор области
-    wl-clipboard  # буфер обмена Wayland	
-    nixos-generators
-
-
-  #hypr
-  hyprpaper
-  hyprpicker
-
-
-    # Python и утилиты
-    python313
-    python312
-    python310
-    python313Packages.pip
-    uv
-
-	gcc
-	cmake
-	gnumake
-
-    # OpenVPN - ПРАВИЛЬНЫЕ имена пакетов
-    openvpn
-
-    # Для игр
-    gamemode
-    gamescope
-    winetricks
-    wine
-    lutris
-	steam-run-native
-    protonup-qt
+    # Core utilities
+    vim-full wget git curl unzip btop micro direnv usbutils
+    
+    # GUI applications
+    firefox chromium vscode discord telegram-desktop obsidian
+    obs-studio gimp libreoffice zoom-us teamspeak3
+    nautilus gnome-tweaks pavucontrol piper prismlauncher
+    rofi-wayland rofi-calc rofi-emoji kitty waybar
+    networkmanagerapplet blueman bluez bluez-tools
+    
+    # Wayland utilities
+    grim slurp wl-clipboard
+    
+    # Hyprland ecosystem
+    hyprpaper hyprpicker
+    
+    # Gaming & Wine
+    steam wine winetricks lutris gamemode gamescope
+    steam-run-native protonup-qt virtualbox
+    
+    # Python & development
+    python313 python312 python310 python313Packages.pip uv
+    gcc cmake gnumake
+    
+    # Networking & VPN
+    openvpn onedrive whatsie
+    
+    # Drivers & device support
+    nvidia-vaapi-driver opentabletdriver libratbag
+    
+    # Miscellaneous
+    arduino-ide xorg.xhost os-prober nixos-generators
   ];
 
   programs.zsh.interactiveShellInit = ''
