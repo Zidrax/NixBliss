@@ -161,40 +161,87 @@ fonts = {
   };
 };
 
-  # --- System Packages ---
+  # System packages
   environment.systemPackages = with pkgs; [
-    # Core utilities
-    vim-full wget git curl unzip btop micro direnv usbutils
-    
-    # GUI applications
-    firefox chromium vscode discord telegram-desktop obsidian
-    obs-studio gimp libreoffice zoom-us teamspeak3
-    nautilus gnome-tweaks pavucontrol piper prismlauncher
-    rofi-wayland rofi-calc rofi-emoji kitty waybar
-    networkmanagerapplet blueman bluez bluez-tools
-    
-    # Wayland utilities
-    grim slurp wl-clipboard
-    
-    # Hyprland ecosystem
-    hyprpaper hyprpicker
-    
-    # Gaming & Wine
-    steam wine winetricks lutris gamemode gamescope
-    steam-run-native protonup-qt virtualbox
-    
-    # Python & development
-    python313 python312 python310 python313Packages.pip uv
-    gcc cmake gnumake
-    
-    # Networking & VPN
-    openvpn onedrive whatsie
-    
-    # Drivers & device support
-    nvidia-vaapi-driver opentabletdriver libratbag
-    
-    # Miscellaneous
-    arduino-ide xorg.xhost os-prober nixos-generators
+    vim-full
+    wget
+    firefox
+    git
+    curl
+    vscode
+    nvidia-vaapi-driver
+    discord
+    steam
+    telegram-desktop
+    obsidian
+    obs-studio
+    gimp
+    wine
+    arduino-ide
+    xorg.xhost
+    direnv
+    unzip
+    onedrive
+    whatsie
+    waydroid
+    teamspeak3
+    libreoffice
+    os-prober
+    zoom-us
+    btop
+    micro
+    gnome-tweaks
+    piper
+    libratbag
+    prismlauncher
+    pavucontrol
+    chromium
+    usbutils
+    virtualbox
+    opentabletdriver
+    rofi-wayland
+    rofi-calc
+    rofi-emoji
+    kitty
+    nautilus              # файловый менеджер
+    waybar
+    networkmanagerapplet
+    blueman           # GUI менеджер Bluetooth
+    bluez              # Bluetooth утилиты
+    bluez-tools        # Дополнительные инструменты
+    grim      # скриншоты
+    slurp     # выбор области
+    wl-clipboard  # буфер обмена Wayland	
+    nixos-generators
+
+
+  #hypr
+  hyprpaper
+  hyprpicker
+
+
+    # Python и утилиты
+    python313
+    python312
+    python310
+    python313Packages.pip
+    uv
+
+	gcc
+	cmake
+	gnumake
+
+    # OpenVPN - ПРАВИЛЬНЫЕ имена пакетов
+    openvpn
+
+    # Для игр
+    gamemode
+    gamescope
+    winetricks
+    wine
+    lutris
+	steam-run-native
+    protonup-qt
   ];
 
   programs.zsh.interactiveShellInit = ''
