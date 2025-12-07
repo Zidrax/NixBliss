@@ -149,7 +149,8 @@ fonts = {
 
          # Включить Waydroid и необходимые сервисы
   virtualisation.waydroid.enable = true;
-  virtualisation.lxd.enable = true;
+  # virtualisation.lxd.enable = true;
+  virtualisation.incuse.enable = true;
 
   # Для ускорения графики (рекомендуется)
   virtualisation.lxc.lxcfs.enable = true;
