@@ -3,89 +3,135 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  system.stateVersion = "25.05";
+
   # --- Базовые настройки системы ---
   nixpkgs.config.allowUnfree = true;
   networking.hostName = "nixos";
 
-  # --- Time and locale ---
+  # --- Время и локализация ---
   time.timeZone = "Europe/Moscow";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" ];
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    supportedLocales = [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" ];
+  };
   console = {
     font = "Lat2-Terminus16";
     useXkbConfig = true;
   };
 
-  # Включите поддержку NTFS в ядре
-  boot.supportedFilesystems = [ "ntfs" ];
-
-  boot.loader.systemd-boot.enable = false;
-
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    useOSProber = true;
-    device = "nodev"; # обязательно, если EFI
+  # --- Загрузчик ---
+  boot = {
+    supportedFilesystems = [ "ntfs" ];
+    loader = {
+      systemd-boot.enable = false;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        useOSProber = true;
+        device = "nodev";
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+    };
+    
+    # Настройки swap
+    kernel.sysctl = {
+      "vm.swappiness" = 5;
+      "vm.vfs_cache_pressure" = 500;
+      "vm.dirty_background_ratio" = 5;
+      "vm.dirty_ratio" = 10;
+      "vm.watermark_scale_factor" = 200;
+    };
+    
+    extraModulePackages = with config.boot.kernelPackages; [ virtualbox ];
   };
 
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  services.udev.extraRules = ''
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="373b", MODE="0666", GROUP="wheel"
-    '';
-
-
-  programs.hyprland = {
-    # Install the packages from nixpkgs
-    enable = true;
-    # Whether to enable XWayland
-    xwayland.enable = true;
+  # --- Аппаратное обеспечение ---
+  hardware = {
+    # NVIDIA
+    nvidia = {
+      open = true;
+      modesetting.enable = true;
+      forceFullCompositionPipeline = true;
+      powerManagement = {
+        enable = true;
+        finegrained = false;
+      };
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
+    };
+    
+    # Графика
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+        intel-media-driver
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        libva
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+    };
+    
+    # Графический планшет
+    opentabletdriver = {
+      enable = true;
+      daemon.enable = true;
+    };
   };
 
-  # Graphics - NVIDIA для RTX 5070
+  # --- Графика и отображение ---
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
     desktopManager.gnome.enable = true;
     videoDrivers = [ "nvidia" ];
     xkb.layout = "us";
   };
+  services.libinput.enable = true;
 
-  hardware.nvidia = {
-    open = true;
-    modesetting.enable = true;
-    forceFullCompositionPipeline = true;
-    powerManagement = {
-      enable = true;
-      finegrained = false;
-    };
-    nvidiaSettings = true;
-     package = config.boot.kernelPackages.nvidiaPackages.latest; 
- };
-
-  # Для Wayland
-  services.xserver.displayManager.gdm.wayland = true;
-
-  # Sound
+  # --- Звук ---
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     pulse.enable = true;
   };
 
-fonts = {
+  # --- Wayland и окружения ---
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  # --- Шрифты ---
+  fonts = {
     packages = with pkgs; [
-           nerd-fonts.fira-code
+      # Nerd Fonts
+      nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
       nerd-fonts.hack
-	nerd-fonts.symbols-only
-	font-awesome
-	fira-code
-	jetbrains-mono
-	  nerd-fonts.jetbrains-mono  # ← JetBrains с иконками
-  nerd-fonts.fira-code       # ← Fira Code с иконками
+      nerd-fonts.symbols-only
+      nerd-fonts.jetbrains-mono  # Дубликат, можно удалить
+      nerd-fonts.fira-code       # Дубликат, можно удалить
+      
+      # Обычные шрифты
+      font-awesome
+      fira-code
+      jetbrains-mono
     ];
     
     fontconfig = {
@@ -97,225 +143,126 @@ fonts = {
     };
   };
 
-  services.libinput.enable = true;
-
-  # Sudo
-  security.sudo.enable = true;
-  security.sudo.wheelNeedsPassword = false;
-
-  # Users
+  # --- Пользователи и права ---
   users.users.User = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "lxd"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "lxd" ];
     hashedPassword = lib.mkDefault null;
-  };
-
-  # Используем весь HDD как swap
-  # swapDevices = [
-  #   {
-  #     device = "/dev/sda1";
-  #     priority = 0;
-  #   }
-  # ];
-
-  # Максимальные настройки для swap
-  # boot.kernel.sysctl = {
-  #   "vm.swappiness" = 5;
-  #   "vm.vfs_cache_pressure" = 500; # АГРЕССИВНО очищать кэш
-  #   "vm.dirty_background_ratio" = 5;
-  #   "vm.dirty_ratio" = 10;
-  #   "vm.watermark_scale_factor" = 200; # Раньше начинать очистку
-  # };
-
-	programs.zsh = {
-	    enable = true;
-	    
-	    # Oh My Zsh - фреймворк с плагинами и темами
-	    ohMyZsh = {
-	      enable = true;
-	      plugins = [ "git" "python" "sudo" "docker" ];
-	      theme = "agnoster";  # Популярная тема
-	    };
-	    
-	    # Автодополнение
-	    autosuggestions.enable = true;
-	    syntaxHighlighting.enable = true;
-	  };
-	
-	# Сделать zsh оболочкой по умолчанию для пользователя
-	 users.users.User.shell = pkgs.zsh;
-	
-         services.ratbagd.enable = true;
-
-         # Включить Waydroid и необходимые сервисы
-  virtualisation.waydroid.enable = true;
-  # virtualisation.lxd.enable = true;
-  virtualisation.incuse.enable = true;
-
-  # Для ускорения графики (рекомендуется)
-  virtualisation.lxc.lxcfs.enable = true;
-
-	hardware.opentabletdriver = {
-  enable = true;
-  daemon = {
-    enable = true;
-  };
-};
-
-  # System packages
-  environment.systemPackages = with pkgs; [
-    vim-full
-    wget
-    firefox
-    git
-    curl
-    vscode
-    nvidia-vaapi-driver
-    discord
-    steam
-    telegram-desktop
-    obsidian
-    obs-studio
-    gimp
-    wine
-    arduino-ide
-    xorg.xhost
-    direnv
-    unzip
-    onedrive
-    whatsie
-    waydroid
-    teamspeak3
-    libreoffice
-    os-prober
-    zoom-us
-    btop
-    micro
-    gnome-tweaks
-    piper
-    libratbag
-    prismlauncher
-    pavucontrol
-    chromium
-    usbutils
-    virtualbox
-    opentabletdriver
-    rofi-wayland
-    rofi-calc
-    rofi-emoji
-    kitty
-    nautilus              # файловый менеджер
-    waybar
-    networkmanagerapplet
-    blueman           # GUI менеджер Bluetooth
-    bluez              # Bluetooth утилиты
-    bluez-tools        # Дополнительные инструменты
-    grim      # скриншоты
-    slurp     # выбор области
-    wl-clipboard  # буфер обмена Wayland	
-    nixos-generators
-
-
-  #hypr
-  hyprpaper
-  hyprpicker
-
-
-    # Python и утилиты
-    python313
-    python312
-    python310
-    python313Packages.pip
-    uv
-
-	gcc
-	cmake
-	gnumake
-
-    # OpenVPN - ПРАВИЛЬНЫЕ имена пакетов
-    openvpn
-
-    # Для игр
-    gamemode
-    gamescope
-    winetricks
-    wine
-    lutris
-	steam-run-native
-    protonup-qt
-  ];
-
-  programs.zsh.interactiveShellInit = ''
-    eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-  '';
-
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-gamescopeSession.enable = true;
-
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-  };
-
-  programs.gamemode.enable = true;
-
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      nvidia-vaapi-driver
-      intel-media-driver
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      libva
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
-
-  # NetworkManager
-  networking.networkmanager = {
-    enable = true;
-    plugins = with pkgs; [
-      networkmanager-openvpn
-    ];
-  };
-
-  # Firewall
-  networking.firewall = {
-    allowedTCPPorts = [ 
-      27036 27037 # Steam
-    ];
-    allowedUDPPorts = [ 
-      27031 27036  # Steam
-      4380  # Steam In-Home Streaming
-    ];
+    shell = pkgs.zsh;
   };
   
-  # Docker
-  virtualisation.docker = {
-  enable = true;
-  # Use the rootless mode - run Docker daemon as non-root user
-  rootless = {
-    enable = true;
-    setSocketVariable = true;
+  security = {
+    sudo = {
+      enable = true;
+      wheelNeedsPassword = false;
+    };
   };
-};
 
-boot.extraModulePackages = with config.boot.kernelPackages; [ 
-  virtualbox
-];
-users.extraGroups.vboxusers.members = [ "User" ];
+  # --- Сеть ---
+  networking = {
+    networkmanager = {
+      enable = true;
+      plugins = with pkgs; [ networkmanager-openvpn ];
+    };
+    firewall = {
+      allowedTCPPorts = [ 27036 27037 ];
+      allowedUDPPorts = [ 27031 27036 4380 ];
+    };
+  };
 
+  # --- Программы и утилиты ---
+  programs = {
+    zsh = {
+      enable = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = [ "git" "python" "sudo" "docker" ];
+        theme = "agnoster";
+      };
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      interactiveShellInit = ''
+        eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+      '';
+    };
+    
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      gamescopeSession.enable = true;
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+    };
+    
+    gamemode.enable = true;
+    firefox.enable = true;
+  };
 
-  programs.firefox.enable = true;
+  # --- Виртуализация ---
+  virtualisation = {
+    docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+    };
+    
+    waydroid.enable = true;
+    lxd.enable = true;
+    lxc.lxcfs.enable = true;
+  };
 
-  system.stateVersion = "25.05";
+  # --- Дополнительные сервисы ---
+  services = {
+    udev.extraRules = ''
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="373b", MODE="0666", GROUP="wheel"
+    '';
+    ratbagd.enable = true;
+  };
+
+  # --- Системные пакеты ---
+  environment.systemPackages = with pkgs; [
+    # Основные утилиты
+    vim-full wget git curl unzip btop micro direnv usbutils
+    
+    # Графические приложения
+    firefox chromium vscode discord telegram-desktop obsidian
+    obs-studio gimp libreoffice zoom-us teamspeak3
+    nautilus gnome-tweaks pavucontrol piper prismlauncher
+    rofi-wayland rofi-calc rofi-emoji kitty waybar
+    networkmanagerapplet blueman bluez bluez-tools
+    
+    # Wayland утилиты
+    grim slurp wl-clipboard
+    
+    # Hyprland
+    hyprpaper hyprpicker
+    
+    # Игры и Wine
+    steam wine winetricks lutris gamemode gamescope
+    steam-run-native protonup-qt virtualbox
+    
+    # Python и разработка
+    python313 python312 python310 python313Packages.pip uv
+    gcc cmake gnumake
+    
+    # Сеть и VPN
+    openvpn onedrive whatsie
+    
+    # Драйверы и устройства
+    nvidia-vaapi-driver opentabletdriver libratbag
+    
+    # Прочее
+    arduino-ide xorg.xhost os-prober nixos-generators
+  ];
+
+  # --- Swap ---
+  swapDevices = [{
+    device = "/dev/sda1";
+    priority = 0;
+  }];
+  
+  # --- Группы пользователей ---
+  users.extraGroups.vboxusers.members = [ "User" ];
 }
