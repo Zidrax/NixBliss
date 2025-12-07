@@ -7,8 +7,11 @@
  **/
 
 configuration {
+    /*---------- Plugin paths ----------*/
+    /*plugin-path: "/run/current-system/sw/lib/rofi/";*/
+
 	/*---------- General setting ----------*/
-	modi: "drun,run,filebrowser,window";
+	modi: "drun,ssh,filebrowser,window,calc";
 	case-sensitive: false;
 	cycle: true;
 	filter: "";
@@ -80,6 +83,7 @@ configuration {
 	display-combi: "Combi";
 	display-keys: "Keys";
 	display-filebrowser: "Files";
+    display-calc: "Calculator";
 
 	/*---------- Misc setting ----------*/
 	terminal: "rofi-sensible-terminal";
@@ -95,6 +99,12 @@ configuration {
 /*	  directory: "/home";*/
       directories-first: true;
       sorting-method:    "name";
+    }
+
+    /*---------- Calculator settings ----------*/
+    calc {
+        history: true;
+        persistent-history: true;
     }
 
 	/*---------- Other settings ----------*/
@@ -180,7 +190,7 @@ configuration {
 */
 }
 
-@theme "~/.config/rofi/style-4.rasi"
+@theme "~/.config/rofi/style.rasi"
 
 
 

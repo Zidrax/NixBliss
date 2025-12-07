@@ -111,21 +111,21 @@ fonts = {
   };
 
   # Используем весь HDD как swap
-  swapDevices = [
-    {
-      device = "/dev/sda1";
-      priority = 0;
-    }
-  ];
+  # swapDevices = [
+  #   {
+  #     device = "/dev/sda1";
+  #     priority = 0;
+  #   }
+  # ];
 
   # Максимальные настройки для swap
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 5;
-    "vm.vfs_cache_pressure" = 500; # АГРЕССИВНО очищать кэш
-    "vm.dirty_background_ratio" = 5;
-    "vm.dirty_ratio" = 10;
-    "vm.watermark_scale_factor" = 200; # Раньше начинать очистку
-  };
+  # boot.kernel.sysctl = {
+  #   "vm.swappiness" = 5;
+  #   "vm.vfs_cache_pressure" = 500; # АГРЕССИВНО очищать кэш
+  #   "vm.dirty_background_ratio" = 5;
+  #   "vm.dirty_ratio" = 10;
+  #   "vm.watermark_scale_factor" = 200; # Раньше начинать очистку
+  # };
 
 	programs.zsh = {
 	    enable = true;

@@ -15,6 +15,7 @@ configuration {
     display-run:                "";
     display-filebrowser:        "";
     display-window:             "";
+    display-ssh:                "ssh";
 	drun-display-format:        "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
 	window-format:              "{w}   {c}   {t}";
 }
