@@ -227,7 +227,7 @@
     vim-full wget git curl unzip btop micro direnv usbutils
     
     # Графические приложения
-    firefox chromium vscode discord telegram-desktop obsidian
+    firefox chromium vscode telegram-desktop obsidian # discord 
     obs-studio gimp libreoffice zoom-us teamspeak3
     nautilus gnome-tweaks pavucontrol piper prismlauncher
     rofi-wayland rofi-calc rofi-emoji kitty waybar
@@ -258,10 +258,10 @@
   ];
 
   # --- Swap ---
-  swapDevices = [{
-    device = "/dev/sda1";
-    priority = 0;
-  }];
+  # swapDevices = [{
+  #   device = "/dev/sda1";
+  #   priority = 0;
+  # }];
   
   # --- Группы пользователей ---
   users.extraGroups.vboxusers.members = [ "User" ];
