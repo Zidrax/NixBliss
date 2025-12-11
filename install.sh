@@ -90,6 +90,7 @@ copy_configs() {
         chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/hypr" 2>/dev/null || true
         chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/rofi" 2>/dev/null || true
         chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/waybar" 2>/dev/null || true
+        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures/Wallpaper" 2>/dev/null || true
     fi
     
     # Копирование hyprland конфигураций
