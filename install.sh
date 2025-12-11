@@ -83,6 +83,7 @@ copy_configs() {
     mkdir -p "$CONFIG_DIR/hypr"
     mkdir -p "$CONFIG_DIR/rofi"
     mkdir -p "$CONFIG_DIR/waybar"
+    mkdir -p "$HOME_DIR/Pictures/Wallpaper"
     
     # Устанавливаем правильного владельца для директорий
     if [ -n "$SUDO_USER" ]; then
