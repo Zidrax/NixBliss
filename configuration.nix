@@ -147,6 +147,7 @@
   users.users.User = {
     isNormalUser = true;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "lxd" ];
+    initialPassword = "";
     hashedPassword = lib.mkDefault null;
     shell = pkgs.zsh;
   };
