@@ -43,6 +43,8 @@ error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+mkdir -p "$HOME_DIR/Pictures/Wallpaper"
+
 # Вывод информации о путях для отладки
 debug_paths() {
     info "=== Отладка путей ==="
@@ -83,7 +85,6 @@ copy_configs() {
     mkdir -p "$CONFIG_DIR/hypr"
     mkdir -p "$CONFIG_DIR/rofi"
     mkdir -p "$CONFIG_DIR/waybar"
-    mkdir -p "$HOME_DIR/Pictures/Wallpaper"
     
     # Устанавливаем правильного владельца для директорий
     if [ -n "$SUDO_USER" ]; then
@@ -91,7 +92,6 @@ copy_configs() {
         chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/rofi" 2>/dev/null || true
         chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/waybar" 2>/dev/null || true
         chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || true
-        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures/Wallpaper" 2>/dev/null || true
     fi
     
     # Копирование hyprland конфигураций
