@@ -50,15 +50,18 @@ create_wallpaper_dir() {
     # Создаем директорию с правильными правами с самого начала
     mkdir -p "$HOME_DIR/Pictures/Wallpaper"
     
-    # Устанавливаем правильного владельца
+    # Устанавливаем правильного владельца (пользователь:группа)
     if [ -n "$SUDO_USER" ]; then
-        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || {
-            # Если не удалось изменить владельца через sudo, пробуем через sudo
-            sudo chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures"
+        # Получаем основную группу пользователя
+        USER_GROUP=$(id -gn "$REAL_USER")
+        chown -R "$REAL_USER:$USER_GROUP" "$HOME_DIR/Pictures" 2>/dev/null || {
+            # Если не удалось изменить владельца, пробуем через sudo
+            sudo chown -R "$REAL_USER:$USER_GROUP" "$HOME_DIR/Pictures"
         }
     else
         # Если скрипт запущен без sudo, владелец уже правильный
-        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || true
+        USER_GROUP=$(id -gn "$REAL_USER")
+        chown -R "$REAL_USER:$USER_GROUP" "$HOME_DIR/Pictures" 2>/dev/null || true
     fi
     
     # Устанавливаем правильные права (755 - владелец может писать, остальные только читать)
