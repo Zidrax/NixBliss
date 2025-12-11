@@ -301,6 +301,9 @@ main() {
     
     # Отладка путей
     debug_paths
+
+    # Создание директории для обоев
+    create_wallpaper_dir
     
     # Проверки
     check_root
