@@ -116,10 +116,10 @@ copy_configs() {
     
     # Устанавливаем правильного владельца для директорий
     if [ -n "$SUDO_USER" ]; then
-        chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/hypr" 2>/dev/null || true
-        chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/rofi" 2>/dev/null || true
-        chown -R "$REAL_USER:$REAL_USER" "$CONFIG_DIR/waybar" 2>/dev/null || true
-        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || true
+        chown -R "$REAL_USER:$USER_GROUP" "$CONFIG_DIR/hypr" 2>/dev/null || true
+        chown -R "$REAL_USER:$USER_GROUP" "$CONFIG_DIR/rofi" 2>/dev/null || true
+        chown -R "$REAL_USER:$USER_GROUP" "$CONFIG_DIR/waybar" 2>/dev/null || true
+        chown -R "$REAL_USER:$USER_GROUP" "$HOME_DIR/Pictures" 2>/dev/null || true
     fi
     
     # Копирование hyprland конфигураций
