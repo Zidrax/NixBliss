@@ -43,7 +43,32 @@ error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-mkdir -p "$HOME_DIR/Pictures/Wallpaper"
+# Создание директории для обоев с правильными правами
+create_wallpaper_dir() {
+    info "Создание директории для обоев..."
+    
+    # Создаем директорию с правильными правами с самого начала
+    mkdir -p "$HOME_DIR/Pictures/Wallpaper"
+    
+    # Устанавливаем правильного владельца
+    if [ -n "$SUDO_USER" ]; then
+        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || {
+            # Если не удалось изменить владельца через sudo, пробуем через sudo
+            sudo chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures"
+        }
+    else
+        # Если скрипт запущен без sudo, владелец уже правильный
+        chown -R "$REAL_USER:$REAL_USER" "$HOME_DIR/Pictures" 2>/dev/null || true
+    fi
+    
+    # Устанавливаем правильные права (755 - владелец может писать, остальные только читать)
+    chmod 755 "$HOME_DIR/Pictures" 2>/dev/null || sudo chmod 755 "$HOME_DIR/Pictures"
+    chmod 755 "$HOME_DIR/Pictures/Wallpaper" 2>/dev/null || sudo chmod 755 "$HOME_DIR/Pictures/Wallpaper"
+    
+    success "Директория для обоев создана: $HOME_DIR/Pictures/Wallpaper"
+    info "Права директории:"
+    ls -la "$HOME_DIR/Pictures/" | grep Wallpaper
+}
 
 # Вывод информации о путях для отладки
 debug_paths() {
