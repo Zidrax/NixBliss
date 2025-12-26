@@ -270,6 +270,7 @@
     # Потом разбить на категории
     throne 
     #v2rayn
+    networkmanager_dmenu
   ];
 
   # --- Swap ---
