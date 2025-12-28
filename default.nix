@@ -271,6 +271,7 @@
     throne 
     #v2rayn
     networkmanager_dmenu
+    jami
   ];
 
   # --- Swap ---
