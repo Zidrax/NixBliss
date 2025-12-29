@@ -42,7 +42,8 @@
       map <C-n> :NERDTreeToggle<CR>
     '';
   };
-  
+
+  # Firefix  
   programs.firefox = {
     enable = true;
     profiles.User = {
@@ -72,6 +73,33 @@
         "browser.shell.checkDefaultBrowser" = false;
         "datareporting.healthreport.uploadEnabled" = false;
       };
+    };
+  };
+
+  # Zsh
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    # Твои алиасы (сокращения команд)
+    shellAliases = {
+      nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#nixos";
+      ll = "ls -l";
+      v = "vim";
+    };
+
+    # Всё, что нельзя описать стандартными опциями, пойдет сюда
+    initExtra = ''
+      # Твой ручной код из .zshrc
+    '';
+
+    # Если используешь Oh My Zsh
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "sudo" ];
+      theme = "robbyrussell"; # Или та, которая у тебя сейчас
     };
   };
 }
