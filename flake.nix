@@ -23,6 +23,7 @@
           home-manager.useUserPackages = true;
           # Указываем файл настроек для пользователя User
           home-manager.users.User = import ./home.nix;
+          home-manager.backupFileExtension = "backup";
         }
       ];
     };
