@@ -11,6 +11,8 @@
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
     jami
+    simplex-chat-desktop
+    element-desktop
   ];
 
   # Vim
@@ -27,7 +29,7 @@
     # Настройки .vimrc в формате Nix
     settings = {
       number = true;         # Включить номера строк
-      relativenumber = true; # Относительные номера строк
+      relativenumber = false; # Относительные номера строк
       shiftwidth = 2;        # Размер отступа
       expandtab = true;      # Использовать пробелы вместо табуляции
       mouse = "a";           # Поддержка мыши
@@ -40,4 +42,37 @@
       map <C-n> :NERDTreeToggle<CR>
     '';
   };
+
+  programs.firefox = {
+    enable = true;
+    profiles.User = {
+      isDefault = true;
+      
+      settings = {
+        # --- ИНТЕРФЕЙС И МИНИМАЛИЗМ ---
+        "browser.startup.page" = 0;              # 0 = пустая страница при запуске
+        "browser.startup.homepage" = "about:blank"; 
+        "browser.newtabpage.enabled" = false;     # Чистая новая вкладка (без топов сайтов)
+        
+        "extensions.pocket.enabled" = false;      # Полностью отключить Pocket
+        "browser.tabs.firefox-view" = false;      # Убрать иконку Firefox View (вверху слева)
+        "browser.aboutConfig.showWarning" = false; # Не бесить предупреждением в about:config
+        
+        # --- ОТКЛЮЧЕНИЕ РОЖИ И СПАМА ---
+        "browser.newtabpage.activity-stream.feeds.section.topstories" = false; # Убрать статьи
+        "browser.newtabpage.activity-stream.showSponsored" = false;            # Убрать рекламу
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.vpn_promo.enabled" = false;                                   # Убрать рекламу VPN
+        "browser.promo.focus.enabled" = false;
+        
+        # --- ИСТОРИЯ И ПАРОЛИ ---
+        "places.history.enabled" = true;          # ИСТОРИЯ СОХРАНЯЕТСЯ (как ты просил)
+        "signon.rememberSignons" = false;         # Не предлагать сохранять пароли (для минимализма)
+        
+        # --- СИСТЕМНОЕ ---
+        "browser.shell.checkDefaultBrowser" = false; # Не спрашивать про "браузер по умолчанию"
+        "datareporting.healthreport.uploadEnabled" = false; # Меньше телеметрии
+      };
+    };
+  };  
 }
