@@ -11,7 +11,8 @@
   networking.hostName = "nixos";
 
   # --- Время и локализация ---
-  time.timeZone = "Europe/Moscow";
+  time.timeZone = "Europe/Berlin";
+  #time.timeZone = "Europe/Moscow";
   i18n = {
     defaultLocale = "en_US.UTF-8";
     supportedLocales = [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" ];

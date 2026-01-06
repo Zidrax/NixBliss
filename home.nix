@@ -10,6 +10,7 @@
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
+    tun2proxy
     jami
     simplex-chat-desktop
     element-desktop
