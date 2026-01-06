@@ -6,6 +6,8 @@
     # Home Manager соответствующей версии
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    antigravity-nix.url = "github:jacopone/antigravity-nix";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
@@ -21,7 +23,8 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          # Указываем файл настроек для пользователя User
+
+          home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.users.User = import ./home.nix;
           home-manager.backupFileExtension = "backup";
         }

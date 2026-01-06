@@ -13,6 +13,8 @@
     jami
     simplex-chat-desktop
     element-desktop
+
+    inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
 
   # Vim
