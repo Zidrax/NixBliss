@@ -10,7 +10,6 @@
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
-    tun2proxy
     jami
     simplex-chat-desktop
     element-desktop
@@ -104,5 +103,177 @@
       plugins = [ "git" "sudo" ];
       theme = "robbyrussell"; # Или та, которая у тебя сейчас
     };
+  };
+
+  # Waybar
+  programs.waybar = {
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        margin-top = 10;
+        margin-right = 20;
+        margin-left = 20;
+        spacing = 10;
+
+        modules-left = [ "hyprland/workspaces" ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "hyprland/language"
+          "battery"
+          "power-profiles-daemon"
+          "pulseaudio"
+          "network"
+          "cpu"
+          "temperature"
+          "tray"
+        ];
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+        };
+
+        "hyprland/language" = {
+          format = "{} ";
+          on-click = "hyprctl switchxkblayout at-translated-set-2-keyboard next";
+          format-en = "ENG";
+          format-ru = "RUS";
+        };
+
+        "network" = {
+          format-wifi = "{essid} ";
+          format-ethernet = "{ipaddr}/{cidr} ";
+          tooltip-format = "{ifname} via {gwaddr} ";
+          format-linked = "{ifname} (No IP) ";
+          format-disconnected = "Disconnected 󰖪";
+          format-alt = "{ifname}: {ipaddr}/{cidr}";
+          on-click-right = "networkmanager_dmenu";
+        };
+
+        "clock" = {
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format-alt = "{:%Y-%m-%d}";
+        };
+
+        "cpu" = {
+          format = "{usage}% ";
+          tooltip = false;
+        };
+
+        "temperature" = {
+          critical-threshold = 80;
+          format = "{temperatureC}°C {icon}";
+          format-icons = [ "" "" "" ];
+        };
+
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{capacity}% {icon}";
+          format-full = "{capacity}% {icon}";
+          format-charging = "{capacity}% ";
+          format-plugged = "{capacity}% ";
+          format-alt = "{time} {icon}";
+          format-icons = [ "" "" "" "" "" ];
+        };
+
+        "pulseaudio" = {
+          format = "{volume}% {icon}";
+          format-bluetooth = "{volume}% {icon} {format_source}";
+          format-bluetooth-muted = " {icon} {format_source}";
+          format-muted = " {format_source}";
+          format-source = "{volume}% ";
+          format-source-muted = "";
+          format-icons = {
+            headphone = "";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            default = [ "" "" "" ];
+          };
+          on-click = "pavucontrol";
+        };
+
+        "tray" = {
+          icon-size = 21;
+          spacing = 10;
+        };
+
+        "power-profiles-daemon" = {
+          format = "{icon}";
+          tooltip-format = "Power profile: {profile}\nDriver: {driver}";
+          tooltip = true;
+          format-icons = {
+            default = "";
+            performance = "";
+            balanced = "";
+            power-saver = "";
+          };
+        };
+      };
+    };
+
+    style = ''
+      * {
+          border: none;
+          border-radius: 0;
+          min-height: 0;
+          margin: 0;
+          padding: 0;
+          box-shadow: none;
+          text-shadow: none;
+          font-family: "JetBrains Mono Nerd Font", "Fira Code", sans-serif;
+          font-size: 14px;
+      }
+
+      #waybar {
+          background: transparent;
+      }
+
+      #workspaces button {
+          padding: 0 10px;
+          background: transparent;
+          transition: color 0.2s ease;
+          color: #f38ba8;
+      }
+
+      #window {
+          color: rgba(245, 255, 250, 0.6);
+          transition: color 0.2s ease;
+      }
+
+      #window:hover {
+          color: rgba(245, 255, 250, 1);
+      }
+
+      .modules-center {
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: 152px;
+          padding: 7px 12px;
+      }
+
+      .modules-right {
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: 152px;
+          padding: 7px 12px;
+      }
+
+      #language, #tray, #clock, #battery, #pulseaudio, #network, #cpu, #temperature, #backlight, #custom-power, #power-profiles-daemon, #bluetooth {
+          color: bisque;
+          padding: 0 7px;
+      }
+
+      #custom-power {
+          color: coral;
+      }
+    '';
   };
 }

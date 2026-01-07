@@ -273,6 +273,7 @@
     #v2rayn
     networkmanager_dmenu
     jami
+    tun2proxy
   ];
 
   # --- Swap ---
