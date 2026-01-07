@@ -358,6 +358,8 @@
         background-color = mkLiteral "transparent";
       };
     };
+  };
+
 
   home.file.".local/bin/powermenu.sh" = {
     executable = true;
