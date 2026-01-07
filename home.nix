@@ -319,6 +319,7 @@
     };
   };
 
+
   home.file.".local/bin/powermenu.sh" = {
     executable = true;
     text = ''
