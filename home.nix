@@ -280,7 +280,7 @@
   #Rofi
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
+    package = pkgs.rofi;
     extraConfig = {
       modi = "drun,run,window";
       show-icons = true;
