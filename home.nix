@@ -276,4 +276,61 @@
       }
     '';
   };
+
+  #Rofi
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
+    extraConfig = {
+      modi = "drun,run,window";
+      show-icons = true;
+      display-drun = "APPS";
+      display-run = "RUN";
+      drun-display-format = "{name}";
+      font = "JetBrainsMono Nerd Font 12";
+    };
+
+    # Стилизация прямо в Nix (заменяет старые .rasi файлы)
+    theme = let
+      inherit (config.lib.formats.rasi) mkLiteral;
+    in {
+      "*" = {
+        bg-col = mkLiteral "#1e1e2e";     # Темный фон как на скрине
+        border-col = mkLiteral "#fab387"; # Оранжевый акцент
+        selected-col = mkLiteral "#313244";
+        fg-col = mkLiteral "#cdd6f4";
+
+        background-color = mkLiteral "@bg-col";
+        border-color = mkLiteral "@border-col";
+        text-color = mkLiteral "@fg-col";
+      };
+
+      "window" = {
+        padding = mkLiteral "20px";
+        border = mkLiteral "2px";
+        border-radius = mkLiteral "12px";
+        width = mkLiteral "600px";
+      };
+
+      "element selected" = {
+        background-color = mkLiteral "@selected-col";
+        text-color = mkLiteral "@border-col"; # Оранжевый текст при выборе
+      };
+    };
+  };
+
+  home.file.".local/bin/powermenu.sh" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      chosen=$(printf "  Shutdown\n  Reboot\n  Suspend\n  Lock" | rofi -dmenu -p "Power Action" -theme-str 'window {width: 300px;}')
+
+      case "$chosen" in
+          *Shutdown) systemctl poweroff ;;
+          *Reboot) systemctl reboot ;;
+          *Suspend) systemctl suspend ;;
+          *Lock) hyprlock ;; # Или swaylock, смотря что используешь
+      esac
+    '';
+  };
 }
