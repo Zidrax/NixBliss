@@ -289,13 +289,13 @@
       font = "JetBrainsMono Nerd Font 12";
     };
 
-  theme = let
+    theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
     in {
       "*" = {
-        bg-col = mkLiteral "#1e1e2e";
-        bg-alt = mkLiteral "#313244";
-        border-col = mkLiteral "#fab387"; # Тот самый оранжевый
+        bg-col = mkLiteral "#1e1e2e";     # Темный фон
+        bg-alt = mkLiteral "#313244";     # Фон для строки поиска
+        border-col = mkLiteral "#fab387"; # Оранжевый акцент
         fg-col = mkLiteral "#cdd6f4";
         
         background-color = mkLiteral "@bg-col";
@@ -307,8 +307,8 @@
         border = mkLiteral "2px";
         border-radius = mkLiteral "12px";
         border-color = mkLiteral "@border-col";
-        width = mkLiteral "800px";
-        height = mkLiteral "500px"; # ФИКСИРОВАННАЯ ВЫСОТА ОКНА
+        width = mkLiteral "800px"; 
+        height = mkLiteral "500px"; # ДОБАВЛЕНО: Фиксированная высота окна
       };
 
       "mainbox" = {
@@ -316,22 +316,34 @@
         spacing = mkLiteral "10px";
       };
 
+      # --- СТРОКА ПОИСКА (Тот самый Search Bar) ---
       "inputbar" = {
         children = mkLiteral "[ prompt, entry ]";
         background-color = mkLiteral "@bg-alt";
         border = mkLiteral "1px";
-        border-color = mkLiteral "@border-col";
+        border-color = mkLiteral "@border-col"; # Оранжевая рамка вокруг поиска
         border-radius = mkLiteral "8px";
         padding = mkLiteral "10px";
         margin = mkLiteral "0px 0px 10px 0px";
       };
 
+      "prompt" = {
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "@border-col";
+      };
+
+      "entry" = {
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "@fg-col";
+        placeholder = "Search...";
+      };
+
+      # --- СПИСОК (Две колонки) ---
       "listview" = {
-        columns = 2;
+        columns = 2; 
         lines = 8;
         spacing = mkLiteral "5px";
-        fixed-height = true; # ТЕПЕРЬ РАЗМЕР НЕ БУДЕТ СКАКАТЬ
-        scrollbar = false;
+        fixed-height = true; # ИЗМЕНЕНО: Теперь размер не будет скакать
       };
 
       "element" = {
@@ -340,26 +352,27 @@
         background-color = mkLiteral "transparent";
       };
 
-      "element selected" = {
-        background-color = mkLiteral "@bg-alt";
-        text-color = mkLiteral "@border-col"; # Оранжевый текст при выборе
-        border = mkLiteral "1px";
-        border-color = mkLiteral "@border-col";
+      "element-icon" = {
+        size = mkLiteral "32px"; 
+        margin = mkLiteral "0px 10px 0px 0px";
+        background-color = mkLiteral "transparent";
       };
 
-      # Нужно явно указать цвет текста внутри элементов, чтобы он наследовался
       "element-text" = {
+        background-color = mkLiteral "transparent";
         text-color = mkLiteral "inherit";
-        background-color = mkLiteral "transparent";
+        vertical-align = mkLiteral "0.5";
       };
-      
-      "element-icon" = {
-        size = mkLiteral "32px";
-        background-color = mkLiteral "transparent";
+
+      # --- ВЫДЕЛЕНИЕ (Оранжевый текст) ---
+      "element selected" = {
+        background-color = mkLiteral "@bg-alt"; 
+        text-color = mkLiteral "@border-col";   
+        border = mkLiteral "1px";
+        border-color = mkLiteral "@border-col"; 
       };
     };
   };
-
 
   home.file.".local/bin/powermenu.sh" = {
     executable = true;
