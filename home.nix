@@ -284,24 +284,21 @@
     extraConfig = {
       modi = "drun,run,window";
       show-icons = true;
-      display-drun = "APPS";
-      display-run = "RUN";
+      display-drun = "   "; # Иконка поиска вместо текста APPS
       drun-display-format = "{name}";
       font = "JetBrainsMono Nerd Font 12";
     };
 
-    # Стилизация прямо в Nix (заменяет старые .rasi файлы)
     theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
     in {
       "*" = {
-        bg-col = mkLiteral "#1e1e2e";     # Темный фон как на скрине
+        bg-col = mkLiteral "#1e1e2e";     # Темный фон
+        bg-alt = mkLiteral "#313244";     # Фон для строки поиска
         border-col = mkLiteral "#fab387"; # Оранжевый акцент
-        selected-col = mkLiteral "#313244";
         fg-col = mkLiteral "#cdd6f4";
-
+        
         background-color = mkLiteral "@bg-col";
-        border-color = mkLiteral "@border-col";
         text-color = mkLiteral "@fg-col";
       };
 
@@ -309,12 +306,69 @@
         padding = mkLiteral "20px";
         border = mkLiteral "2px";
         border-radius = mkLiteral "12px";
-        width = mkLiteral "600px";
+        border-color = mkLiteral "@border-col";
+        width = mkLiteral "800px"; # Увеличил ширину для двух колонок
       };
 
+      "mainbox" = {
+        children = mkLiteral "[ inputbar, listview ]";
+        spacing = mkLiteral "10px";
+      };
+
+      # --- СТРОКА ПОИСКА (Тот самый Search Bar) ---
+      "inputbar" = {
+        children = mkLiteral "[ prompt, entry ]";
+        background-color = mkLiteral "@bg-alt";
+        border = mkLiteral "1px";
+        border-color = mkLiteral "@border-col"; # Оранжевая рамка вокруг поиска
+        border-radius = mkLiteral "8px";
+        padding = mkLiteral "10px";
+        margin = mkLiteral "0px 0px 10px 0px";
+      };
+
+      "prompt" = {
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "@border-col";
+      };
+
+      "entry" = {
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "@fg-col";
+        placeholder = "Search...";
+      };
+
+      # --- СПИСОК (Две колонки) ---
+      "listview" = {
+        columns = 2; # Возвращаем вид как на первом скрине
+        lines = 8;
+        spacing = mkLiteral "5px";
+        fixed-height = false;
+      };
+
+      "element" = {
+        padding = mkLiteral "10px";
+        border-radius = mkLiteral "8px";
+        background-color = mkLiteral "transparent";
+      };
+
+      "element-icon" = {
+        size = mkLiteral "32px"; # Иконки чуть крупнее
+        margin = mkLiteral "0px 10px 0px 0px";
+        background-color = mkLiteral "transparent";
+      };
+
+      "element-text" = {
+        background-color = mkLiteral "transparent";
+        text-color = mkLiteral "inherit";
+        vertical-align = mkLiteral "0.5";
+      };
+
+      # --- ВЫДЕЛЕНИЕ (Оранжевый текст) ---
       "element selected" = {
-        background-color = mkLiteral "@selected-col";
-        text-color = mkLiteral "@border-col"; # Оранжевый текст при выборе
+        background-color = mkLiteral "@bg-alt"; # Слегка подсвечиваем фон
+        text-color = mkLiteral "@border-col";   # ДЕЛАЕМ ТЕКСТ ОРАНЖЕВЫМ
+        border = mkLiteral "1px";
+        border-color = mkLiteral "@border-col"; # И добавляем тонкую рамку
       };
     };
   };
