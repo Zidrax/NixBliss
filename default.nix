@@ -3,7 +3,7 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
   # --- Базовые настройки системы ---
   nixpkgs.config.allowUnfree = true;
@@ -111,6 +111,8 @@
       support32Bit = true;
     };
     pulse.enable = true;
+    jack.enable = true;
+    wireplumber.enable = true;
   };
 
   # --- Wayland и окружения ---
