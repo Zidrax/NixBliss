@@ -388,4 +388,140 @@
       esac
     '';
   };
+
+  # Hyprland
+  # Hyprland Configuration
+  wayland.windowManager.hyprland = {
+    enable = true;
+    # Настройки в формате Nix (превращаются в hyprland.conf автоматически)
+    settings = {
+      "$mainMod" = "SUPER";
+      "$terminal" = "kitty";
+      "$fileManager" = "nautilus";
+      "$menu" = "rofi -show drun";
+
+      monitor = [
+        "DP-1,preferred,auto,1"
+        "HDMI-A-1,preferred,auto,1.333333"
+      ];
+
+      workspace = [
+        "1, monitor:DP-1"
+        "2, monitor:DP-1"
+        "3, monitor:DP-1"
+        "4, monitor:DP-1"
+        "5, monitor:DP-1"
+        "6, monitor:DP-1"
+        "7, monitor:DP-1"
+        "8, monitor:DP-1"
+        "9, monitor:DP-1"
+        "10, monitor:HDMI-A-1"
+      ];
+
+      exec-once = [
+        "Throne"
+        "nm-applet &"
+        "waybar & hyprpaper"
+        "[workspace 10] $terminal"
+        "[workspace 1] obsidian"
+        "sleep 2 && hyprctl dispatch exec \"[workspace 2]\" firefox"
+        "[workspace 3] Telegram"
+      ];
+
+      env = [
+        "XCURSOR_SIZE,16"
+        "HYPRCURSOR_SIZE,16"
+        "XCURSOR_THEME,Adwaita"
+        "GTK_THEME,Adwaita-dark"
+      ];
+
+      general = {
+        gaps_in = 5;
+        gaps_out = 20;
+        border_size = 2;
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        "col.inactive_border" = "rgba(595959aa)";
+        layout = "dwindle";
+      };
+
+      decoration = {
+        rounding = 10;
+        blur = {
+          enabled = true;
+          size = 3;
+          passes = 1;
+        };
+        shadow = {
+          enabled = true;
+          range = 4;
+          color = "rgba(1a1a1aee)";
+        };
+      };
+
+      animations = {
+        enabled = true;
+        bezier = [
+          "easeOutQuint,0.23,1,0.32,1"
+          "easeInOutCubic,0.65,0.05,0.36,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
+        ];
+        animation = [
+          "global, 1, 10, default"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "workspaces, 1, 1.94, almostLinear, fade"
+        ];
+      };
+
+      input = {
+        kb_layout = "us, ru";
+        kb_options = "grp:win_space_toggle";
+        follow_mouse = 1;
+        sensitivity = -0.5;
+      };
+
+      bind = [
+        "$mainMod, RETURN, exec, $terminal"
+        "$mainMod, Q, killactive"
+        "$mainMod, E, exec, $fileManager"
+        "$mainMod, V, togglefloating"
+        "$mainMod, D, exec, $menu"
+        "$mainMod, M, exec, ~/.local/bin/powermenu.sh"
+        "$mainMod, P, pseudo"
+        "$mainMod, J, togglesplit"
+
+        # Workspaces
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
+        "$mainMod, 6, workspace, 6"
+        "$mainMod, 7, workspace, 7"
+        "$mainMod, 8, workspace, 8"
+        "$mainMod, 9, workspace, 9"
+        "$mainMod, 0, workspace, 10"
+
+        # Скриншоты
+        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+        "SHIFT, Print, exec, grim - | wl-copy"
+      ];
+
+      bindm = [
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
+      ];
+    };
+  };
+
+  # Переносим конфиг обоев
+  home.file.".config/hypr/hyprpaper.conf".text = ''
+    preload = /home/User/Pictures/Wallpaper/wl1.jpg
+    wallpaper = DP-1, /home/User/Pictures/Wallpaper/wl1.jpg
+    wallpaper = HDMI-A-1, /home/User/Pictures/Wallpaper/wl1.jpg
+  '';
 }
