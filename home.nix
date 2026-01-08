@@ -390,10 +390,8 @@
   };
 
   # Hyprland
-  # Hyprland Configuration
   wayland.windowManager.hyprland = {
     enable = true;
-    # Настройки в формате Nix (превращаются в hyprland.conf автоматически)
     settings = {
       "$mainMod" = "SUPER";
       "$terminal" = "kitty";
@@ -433,6 +431,7 @@
         "HYPRCURSOR_SIZE,16"
         "XCURSOR_THEME,Adwaita"
         "GTK_THEME,Adwaita-dark"
+        "COLORSCHEME,dark" # Вернул эту строку
       ];
 
       general = {
@@ -446,14 +445,19 @@
 
       decoration = {
         rounding = 10;
+        "rounding_power" = 2;
+        active_opacity = 1.0;
+        inactive_opacity = 1.0;
         blur = {
           enabled = true;
           size = 3;
           passes = 1;
+          vibrancy = 0.1696;
         };
         shadow = {
           enabled = true;
           range = 4;
+          render_power = 3;
           color = "rgba(1a1a1aee)";
         };
       };
@@ -469,10 +473,16 @@
         ];
         animation = [
           "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
           "windows, 1, 4.79, easeOutQuint"
           "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
           "windowsOut, 1, 1.49, linear, popin 87%"
           "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
           "workspaces, 1, 1.94, almostLinear, fade"
         ];
       };
@@ -494,7 +504,7 @@
         "$mainMod, P, pseudo"
         "$mainMod, J, togglesplit"
 
-        # Workspaces
+        # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
         "$mainMod, 2, workspace, 2"
         "$mainMod, 3, workspace, 3"
@@ -506,22 +516,31 @@
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
 
+        # ПЕРЕМЕЩЕНИЕ МЫШКОЙ (Вернул скролл!)
+        "$mainMod, mouse_up, workspace, e+1"
+        "$mainMod, mouse_down, workspace, e-1"
+
         # Скриншоты
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
         "SHIFT, Print, exec, grim - | wl-copy"
+        "CONTROL, Print, exec, grim -g \"$(slurp)\" ~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S').png"
       ];
 
       bindm = [
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];
-    };
-  };
 
-  # Переносим конфиг обоев
-  home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload = /home/User/Pictures/Wallpaper/wl1.jpg
-    wallpaper = DP-1, /home/User/Pictures/Wallpaper/wl1.jpg
-    wallpaper = HDMI-A-1, /home/User/Pictures/Wallpaper/wl1.jpg
-  '';
+      # Мультимедиа
+      bindel = [
+        ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ];
+    };
+
+    # Чтобы точно ничего не потерять, можно добавить оставшиеся правила сюда
+    extraConfig = ''
+      windowrule = suppressevent maximize, class:.*
+    '';
+  };
 }
