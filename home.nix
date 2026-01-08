@@ -543,4 +543,11 @@
       windowrule = suppressevent maximize, class:.*
     '';
   };
+
+  # Переносим конфиг обоев
+  home.file.".config/hypr/hyprpaper.conf".text = ''
+    preload = /home/User/Pictures/Wallpaper/wl1.jpg
+    wallpaper = DP-1, /home/User/Pictures/Wallpaper/wl1.jpg
+    wallpaper = HDMI-A-1, /home/User/Pictures/Wallpaper/wl1.jpg
+  '';
 }
