@@ -166,9 +166,21 @@
       enable = true;
       plugins = with pkgs; [ networkmanager-openvpn ];
     };
+    
     firewall = {
+      enable = true; # Убедись, что firewall включен
       allowedTCPPorts = [ 27036 27037 ];
-      allowedUDPPorts = [ 27031 27036 4380 ];
+      
+      # Объединяем все UDP порты здесь:
+      allowedUDPPorts = [ 
+        27031 27036 4380          # Steam порты
+        10999 11000 12346 12347   # DST порты
+      ];
+
+      allowedUDPPortRanges = [
+        { from = 27000; to = 27015; }
+        { from = 27016; to = 27030; }
+      ];
     };
 
     nftables.enable = true;
