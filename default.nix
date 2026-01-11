@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -146,7 +146,7 @@
   };
 
   # --- Пользователи и права ---
-  users.users.User = {
+  users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" ];
     hashedPassword = lib.mkDefault null;
@@ -169,7 +169,7 @@
     
     firewall = {
       enable = true; # Убедись, что firewall включен
-      allowedTCPPorts = [ 27036 27037 ];
+      allowedTCPPorts = [ 5000 27036 27037 ];
       
       # Объединяем все UDP порты здесь:
       allowedUDPPorts = [ 

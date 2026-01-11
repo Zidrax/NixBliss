@@ -1,8 +1,8 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, username,.. }:
 
 {
-  home.username = "User";
-  home.homeDirectory = "/home/User";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.11";
 
   # Программы, которыми управляет Home Manager

@@ -10,9 +10,12 @@
     antigravity-nix.url = "github:jacopone/antigravity-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  let
+    username = "User"; # Менять при необходимости
+    specialArgs = { inherit inputs username; };
+  in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
       modules = [
         { nixpkgs.hostPlatform = "x86_64-linux"; }
 
@@ -26,7 +29,7 @@
           home-manager.useUserPackages = true;
 
           home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.User = import ./home.nix;
+          home-manager.users.${username} = import ./home.nix;
           home-manager.backupFileExtension = "backup";
         }
       ];
