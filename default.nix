@@ -148,7 +148,7 @@
   # --- Пользователи и права ---
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" ];
     hashedPassword = lib.mkDefault null;
     shell = pkgs.zsh;
   };

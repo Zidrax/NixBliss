@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username,.. }:
+{ config, pkgs, inputs, username, ... }:
 
 {
   home.username = username;
@@ -13,6 +13,10 @@
     jami
     simplex-chat-desktop
     element-desktop
+
+    lorien
+    drawing
+    xournalpp
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
