@@ -17,6 +17,9 @@
     lorien
     drawing
     xournalpp
+    nodejs_20
+    amberol
+    imv
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];

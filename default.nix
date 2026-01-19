@@ -234,7 +234,7 @@
       };
     };
     
-    waydroid.enable = true;
+#    waydroid.enable = true;
     incus.enable = true;
     lxc.lxcfs.enable = true;
   };
@@ -270,7 +270,8 @@
     steam-run protonup-qt #virtualbox
     
     # Python и разработка
-    python313 python312 python310 python313Packages.pip uv
+    #python313 python312 python310 python313Packages.pip 
+    uv
     gcc cmake gnumake
     
     # Сеть и VPN
@@ -288,6 +289,44 @@
     networkmanager_dmenu
     jami
     tun2proxy
+  ];
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    # Базовые зависимости
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+
+    # Системные и DB
+    libuuid
+    libxcrypt
+    readline
+    sqlite
+    glib
+    libxml2
+    libxslt
+
+    # Графика и UI (нужны для OpenCV, Matplotlib, Qt, Tkinter)
+    libGL
+    libX11
+    libXcursor
+    libXext
+    libXi
+    libXrender
+    libXrandr
+    libXinerama
+    libxkbcommon
+    fontconfig
+    freetype
+
+    # Для численных вычислений
+    openblas
   ];
 
   # --- Swap ---
