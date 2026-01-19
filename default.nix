@@ -312,18 +312,20 @@
     libxml2
     libxslt
 
-    # Графика и UI (нужны для OpenCV, Matplotlib, Qt, Tkinter)
+    # Графика и UI
     libGL
-    libX11
-    libXcursor
-    libXext
-    libXi
-    libXrender
-    libXrandr
-    libXinerama
     libxkbcommon
     fontconfig
     freetype
+
+    # Библиотеки X11 (находятся в xorg)
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXext
+    xorg.libXi
+    xorg.libXrender
+    xorg.libXrandr
+    xorg.libXinerama
 
     # Для численных вычислений
     openblas
