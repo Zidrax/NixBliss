@@ -289,6 +289,7 @@
     networkmanager_dmenu
     jami
     tun2proxy
+    onlyoffice-bin
   ];
 
   programs.nix-ld.enable = true;
