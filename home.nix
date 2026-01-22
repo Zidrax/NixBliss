@@ -28,32 +28,46 @@
   programs.vim = {
     enable = true;
 
-    #plugins
+    # Список плагинов
     plugins = with pkgs.vimPlugins; [
-      vim-airline      # Красивая статусная строка
-      vim-nix          # Подсветка синтаксиса Nix
-      nerdtree         # Дерево файлов
-      coc-nvim         # Автодополнение (LSP)
+      vim-airline           # Красивая статусная строка
+      vim-nix               # Подсветка синтаксиса для твоих конфигов Nix
+      nerdtree              # Дерево файлов
+      coc-nvim              # Основной движок автодополнения
+      gruvbox-community     # Качественная цветовая схема (исправляет плохой вид)
     ];
 
     # Настройки .vimrc в формате Nix
     settings = {
-      number = true;         # Включить номера строк
+      number = true;          # Включить номера строк
       relativenumber = false; # Относительные номера строк
-      shiftwidth = 2;        # Размер отступа
-      expandtab = true;      # Использовать пробелы вместо табуляции
-      mouse = "a";           # Поддержка мыши
+      shiftwidth = 2;         # Размер отступа
+      expandtab = true;       # Использовать пробелы вместо табуляции
+      mouse = "a";            # Поддержка мыши
     };
-    # Дополнительный конфиг (традиционный синтаксис vimrc)
+
+    # Традиционный конфиг vimrc
     extraConfig = ''
+      " --- Основные настройки ---
       syntax on
+      set termguicolors       " Включает поддержку 24-битных цветов
+      colorscheme gruvbox     " Устанавливаем тему gruvbox
+      set background=dark     " Темный режим для комфортной работы
       set clipboard=unnamedplus
+
       " Горячая клавиша для дерева файлов
       map <C-n> :NERDTreeToggle<CR>
 
-      " --- Настройки coc.nvim ---
+      " --- Исправление внешнего вида меню автодополнения ---
+      " Делаем меню более читаемым (темный фон, светлый текст)
+      highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
+      highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
+      highlight CocFloating ctermbg=236 guibg=#282828
+      highlight CocSuggestAnchor guibg=#458588
 
-      " Использовать <TAB> для выбора подсказки или принудительного вызова меню
+      " --- Настройки логики автодополнения (coc.nvim) ---
+
+      " Использовать <TAB> для навигации в меню и выбора
       inoremap <silent><expr> <TAB>
             \ coc#pum#visible() ? coc#pum#next(1) :
             \ CheckBackspace() ? "\<Tab>" :
@@ -65,13 +79,12 @@
         return !col || getline('.')[col - 1]  =~# '\s'
       endfunction
 
-      " Использовать <Enter> для подтверждения выбора (завершает дополнение)
+      " Использовать <Enter> для подтверждения выбора
       inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                                     \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-      " Перейти к определению (Go To Definition)
+      " Полезные команды для разработки
       nmap <silent> gd <Plug>(coc-definition)
-      " Показать документацию при наведении (K)
       nnoremap <silent> K :call ShowDocumentation()<CR>
 
       function! ShowDocumentation()
