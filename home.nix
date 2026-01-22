@@ -50,6 +50,37 @@
       set clipboard=unnamedplus
       " Горячая клавиша для дерева файлов
       map <C-n> :NERDTreeToggle<CR>
+
+      " --- Настройки coc.nvim ---
+
+      " Использовать <TAB> для выбора подсказки или принудительного вызова меню
+      inoremap <silent><expr> <TAB>
+            \ coc#pum#visible() ? coc#pum#next(1) :
+            \ CheckBackspace() ? "\<Tab>" :
+            \ coc#refresh()
+      inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+      function! CheckBackspace() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+      endfunction
+
+      " Использовать <Enter> для подтверждения выбора (завершает дополнение)
+      inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+      " Перейти к определению (Go To Definition)
+      nmap <silent> gd <Plug>(coc-definition)
+      " Показать документацию при наведении (K)
+      nnoremap <silent> K :call ShowDocumentation()<CR>
+
+      function! ShowDocumentation()
+        if CocAction('hasProvider', 'hover')
+          call CocActionAsync('doHover')
+        else
+          call feedkeys('K', 'in')
+        endif
+      endfunction
     '';
   };
 
