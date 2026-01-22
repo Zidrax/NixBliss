@@ -30,44 +30,47 @@
 
     # Список плагинов
     plugins = with pkgs.vimPlugins; [
-      vim-airline           # Красивая статусная строка
-      vim-nix               # Подсветка синтаксиса для твоих конфигов Nix
+      vim-airline           # Статусная строка
+      vim-nix               # Подсветка Nix
       nerdtree              # Дерево файлов
-      coc-nvim              # Основной движок автодополнения
-      gruvbox-community     # Качественная цветовая схема (исправляет плохой вид)
+      coc-nvim              # Автодополнение
+      gruvbox-community     # Тема оформления
+      auto-pairs            # Автозакрытие скобок + "прыжок" через скобку
     ];
 
-    # Настройки .vimrc в формате Nix
+    # Настройки .vimrc (Nix-style)
     settings = {
-      number = true;          # Включить номера строк
-      relativenumber = false; # Относительные номера строк
-      shiftwidth = 2;         # Размер отступа
-      expandtab = true;       # Использовать пробелы вместо табуляции
-      mouse = "a";            # Поддержка мыши
+      number = true;
+      relativenumber = false;
+      shiftwidth = 2;
+      expandtab = true;
+      mouse = "a";
     };
 
-    # Традиционный конфиг vimrc
+    # Традиционный конфиг (vimrc)
     extraConfig = ''
-      " --- Основные настройки ---
+      " --- Базовые настройки и визуал ---
       syntax on
-      set termguicolors       " Включает поддержку 24-битных цветов
-      colorscheme gruvbox     " Устанавливаем тему gruvbox
-      set background=dark     " Темный режим для комфортной работы
+      set termguicolors
+      set background=dark
+      colorscheme gruvbox
       set clipboard=unnamedplus
 
       " Горячая клавиша для дерева файлов
       map <C-n> :NERDTreeToggle<CR>
 
-      " --- Исправление внешнего вида меню автодополнения ---
-      " Делаем меню более читаемым (темный фон, светлый текст)
+      " --- Исправление цветов меню дополнений ---
       highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
       highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
       highlight CocFloating ctermbg=236 guibg=#282828
-      highlight CocSuggestAnchor guibg=#458588
 
-      " --- Настройки логики автодополнения (coc.nvim) ---
+      " --- Настройка Auto-Pairs ---
+      " Чтобы auto-pairs не конфликтовал с Enter в coc.nvim
+      let g:AutoPairsMapCR = 0 
 
-      " Использовать <TAB> для навигации в меню и выбора
+      " --- Настройки coc.nvim ---
+
+      " Tab для навигации в меню
       inoremap <silent><expr> <TAB>
             \ coc#pum#visible() ? coc#pum#next(1) :
             \ CheckBackspace() ? "\<Tab>" :
@@ -79,11 +82,11 @@
         return !col || getline('.')[col - 1]  =~# '\s'
       endfunction
 
-      " Использовать <Enter> для подтверждения выбора
+      " Enter для подтверждения выбора (дружит с auto-pairs)
       inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                                     \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-      " Полезные команды для разработки
+      " Переход к определению и документация
       nmap <silent> gd <Plug>(coc-definition)
       nnoremap <silent> K :call ShowDocumentation()<CR>
 
