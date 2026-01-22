@@ -30,15 +30,14 @@
 
     # Список плагинов
     plugins = with pkgs.vimPlugins; [
-      vim-airline           # Статусная строка
-      vim-nix               # Подсветка Nix
-      nerdtree              # Дерево файлов
-      coc-nvim              # Автодополнение
-      gruvbox-community     # Тема оформления
-      auto-pairs            # Автозакрытие скобок + "прыжок" через скобку
+      vim-airline
+      vim-nix
+      nerdtree
+      coc-nvim
+      gruvbox-community
+      auto-pairs
     ];
 
-    # Настройки .vimrc (Nix-style)
     settings = {
       number = true;
       relativenumber = false;
@@ -47,30 +46,36 @@
       mouse = "a";
     };
 
-    # Традиционный конфиг (vimrc)
     extraConfig = ''
-      " --- Базовые настройки и визуал ---
+      " --- Визуал и интерфейс ---
       syntax on
       set termguicolors
       set background=dark
       colorscheme gruvbox
       set clipboard=unnamedplus
 
+      " --- Настройка КУРСОРА (вертикальная линия в Insert mode) ---
+      " 1 или 2 - блок, 3 или 4 - подчеркивание, 5 или 6 - вертикальная линия
+      let &t_SI = "\e[6 q" " Режим вставки
+      let &t_SR = "\e[4 q" " Режим замены
+      let &t_EI = "\e[2 q" " Обычный режим (блок обратно)
+
+      " --- ОТКЛЮЧЕНИЕ подсказок (Inlay Hints: *args, *values) ---
+      autocmd User CocNvimInit call coc#config('inlayHint.enable', v:false)
+      autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.callArgumentNames', 'none')
+      autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.variableTypes', v:false)
+
       " Горячая клавиша для дерева файлов
       map <C-n> :NERDTreeToggle<CR>
 
-      " --- Исправление цветов меню дополнений ---
+      " Цвета меню автодополнения
       highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
       highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
       highlight CocFloating ctermbg=236 guibg=#282828
 
-      " --- Настройка Auto-Pairs ---
-      " Чтобы auto-pairs не конфликтовал с Enter в coc.nvim
+      " --- Логика автодополнения и скобок ---
       let g:AutoPairsMapCR = 0 
 
-      " --- Настройки coc.nvim ---
-
-      " Tab для навигации в меню
       inoremap <silent><expr> <TAB>
             \ coc#pum#visible() ? coc#pum#next(1) :
             \ CheckBackspace() ? "\<Tab>" :
@@ -82,11 +87,9 @@
         return !col || getline('.')[col - 1]  =~# '\s'
       endfunction
 
-      " Enter для подтверждения выбора (дружит с auto-pairs)
       inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                                     \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-      " Переход к определению и документация
       nmap <silent> gd <Plug>(coc-definition)
       nnoremap <silent> K :call ShowDocumentation()<CR>
 
