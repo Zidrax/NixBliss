@@ -10,16 +10,13 @@
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
-    jami
-    simplex-chat-desktop
     element-desktop
 
-    lorien
-    drawing
     xournalpp
     nodejs_20
     amberol
     imv
+    homebank
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
