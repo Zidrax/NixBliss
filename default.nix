@@ -318,6 +318,9 @@
     libxkbcommon
     fontconfig
     freetype
+    tcl
+    tk
+
 
     # Библиотеки X11 (находятся в xorg)
     xorg.libX11
