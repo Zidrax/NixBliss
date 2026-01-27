@@ -19,7 +19,7 @@
     homebank
     sqlitebrowser
     sqlite
-    beekeeper-studio
+    dbeaver-bin
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
