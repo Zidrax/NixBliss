@@ -17,6 +17,8 @@
     amberol
     imv
     homebank
+    sqlitebrowser
+    sqlite
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
