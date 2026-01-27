@@ -19,6 +19,7 @@
     homebank
     sqlitebrowser
     sqlite
+    beekeeper-studio
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
