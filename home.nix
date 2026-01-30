@@ -20,6 +20,8 @@
     sqlitebrowser
     sqlite
     dbeaver-bin
+    qpwgraph
+    obs-studio
 
     inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
@@ -476,7 +478,7 @@
 
       exec-once = [
         "Throne"
-        "nm-applet &"
+        # "nm-applet &"
         "waybar & hyprpaper"
         "[workspace 10] $terminal"
         "[workspace 1] obsidian"

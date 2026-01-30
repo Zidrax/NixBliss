@@ -113,6 +113,27 @@
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
+
+    extraConfig.pipewire."99-input-mixing" = {
+  "context.modules" = [
+    {
+      name = "libpipewire-module-loopback";
+      args = {
+        "node.description" = "Stream + Mic Mix";
+        "capture.props" = {
+          "node.name" = "stream_mic_mix_input";
+          "media.class" = "Audio/Sink";
+          "audio.position" = [ "FL" "FR" ];
+        };
+        "playback.props" = {
+          "node.name" = "stream_mic_mix_output";
+          "media.class" = "Audio/Source";
+          "audio.position" = [ "FL" "FR" ];
+        };
+      };
+    }
+  ];
+};
   };
 
   # --- Wayland и окружения ---
