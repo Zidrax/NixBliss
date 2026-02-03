@@ -23,7 +23,7 @@
     qpwgraph
     obs-studio
 
-
+    antigravity
     # inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
 
