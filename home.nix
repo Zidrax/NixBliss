@@ -23,7 +23,8 @@
     qpwgraph
     obs-studio
 
-    inputs.antigravity-nix.packages.${pkgs.system}.default
+
+    # inputs.antigravity-nix.packages.${pkgs.system}.default
   ];
 
   # Vim
