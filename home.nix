@@ -564,6 +564,7 @@
         "$mainMod, M, exec, ~/.local/bin/powermenu.sh"
         "$mainMod, P, pseudo"
         "$mainMod, J, togglesplit"
+        "$mainMod SHIFT, V, exec, wl-paste > /tmp/clip_img && imv /tmp/clip_img"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
