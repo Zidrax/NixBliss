@@ -90,8 +90,8 @@
         return !col || getline('.')[col - 1]  =~# '\s'
       endfunction
 
-      inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                                    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+      inoremap <silent><expr> <CR> coc#pum#visible() && coc#pum#info()['index'] != -1 ? coc#pum#confirm()
+        \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
       nmap <silent> gd <Plug>(coc-definition)
       nnoremap <silent> K :call ShowDocumentation()<CR>
