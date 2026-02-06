@@ -49,6 +49,15 @@
       mouse = "a";
     };
 
+    coc.settings = {
+      "suggest.autoTrigger" = "always";
+      "suggest.timeout" = 500;
+      "suggest.noselect" = true;
+      "suggest.enablePreview" = true;
+      "suggest.acceptSuggestionOnEnter" = "both";
+      "suggest.triggerAfterInsertEnter" = true;
+    };
+
     extraConfig = ''
       " --- Визуал и интерфейс ---
       syntax on
@@ -77,6 +86,7 @@
       highlight CocFloating ctermbg=236 guibg=#282828
 
       " --- Логика автодополнения и скобок ---
+      set completeopt=noinsert,menuone,noselect
       let g:AutoPairsMapCR = 0 
 
       inoremap <silent><expr> <TAB>
