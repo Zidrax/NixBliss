@@ -79,6 +79,7 @@
 
       " --- Логика автодополнения и скобок ---
       set completeopt=noinsert,menuone,noselect
+      set shortmess+=c
       let g:AutoPairsMapCR = 0 
 
       inoremap <silent><expr> <TAB>
