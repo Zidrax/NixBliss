@@ -49,14 +49,6 @@
       mouse = "a";
     };
 
-    coc.settings = {
-      "suggest.autoTrigger" = "always";
-      "suggest.timeout" = 500;
-      "suggest.noselect" = true;
-      "suggest.enablePreview" = true;
-      "suggest.acceptSuggestionOnEnter" = "both";
-      "suggest.triggerAfterInsertEnter" = true;
-    };
 
     extraConfig = ''
       " --- Визуал и интерфейс ---
