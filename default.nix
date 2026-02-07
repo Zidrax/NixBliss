@@ -191,6 +191,7 @@
     firewall = {
       enable = true; # Убедись, что firewall включен
       allowedTCPPorts = [ 5000 27036 27037 ];
+      trustedInterfaces = [ "waydroid0" ];
       
       # Объединяем все UDP порты здесь:
       allowedUDPPorts = [ 
