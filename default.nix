@@ -292,7 +292,7 @@
     steam wine winetricks lutris gamemode gamescope
     steam-run protonup-qt #virtualbox
     waydroid
-    nix-env -iA nixpkgs.genymotion
+    genymotion
     
     # Python и разработка
     uv
