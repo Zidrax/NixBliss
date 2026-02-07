@@ -255,7 +255,7 @@
       };
     };
     
-#    waydroid.enable = true;
+    waydroid.enable = true;
     incus.enable = true;
     lxc.lxcfs.enable = true;
   };
