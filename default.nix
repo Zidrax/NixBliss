@@ -291,9 +291,9 @@
     # Игры и Wine
     steam wine winetricks lutris gamemode gamescope
     steam-run protonup-qt #virtualbox
+    waydroid
     
     # Python и разработка
-    #python313 python312 python310 python313Packages.pip 
     uv
     gcc cmake gnumake
     
