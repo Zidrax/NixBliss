@@ -47,6 +47,10 @@
       "vm.dirty_ratio" = 10;
       "vm.watermark_scale_factor" = 200;
     };
+
+    boot.kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+    };
     
     # extraModulePackages = with config.boot.kernelPackages; [ virtualbox ];
   };
