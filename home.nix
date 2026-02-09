@@ -772,4 +772,23 @@
       ];
     };
   };
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";       # Сама команда блокировк
+        before_sleep_cmd = "loginctl lock-session";    # Блочить, если вдруг уснул сам (например, закрыл крышку)
+        after_sleep_cmd = "hyprctl dispatch dpms on";  # Включать монитор при пробуждении
+      };
+
+      listener = [
+        {
+          timeout = 300;                                # 5 минут
+          # pidof hyprlock && ... означает "ТОЛЬКО если процесс hyprlock найден, то выполняй suspend"
+          on-timeout = "pidof hyprlock && systemctl suspend"; 
+        }
+      ];
+    };
+  };
 }
