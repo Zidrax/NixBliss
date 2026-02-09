@@ -599,7 +599,6 @@
 
       exec-once = [
         "Throne"
-        # "nm-applet &"
         "waybar & hyprpaper"
         "[workspace 10] $terminal"
         "[workspace 1] obsidian"
@@ -612,7 +611,7 @@
         "HYPRCURSOR_SIZE,16"
         "XCURSOR_THEME,Adwaita"
         "GTK_THEME,Adwaita-dark"
-        "COLORSCHEME,dark" # Вернул эту строку
+        "COLORSCHEME,dark"
       ];
 
       general = {
@@ -673,6 +672,13 @@
         kb_options = "grp:win_space_toggle";
         follow_mouse = 1;
         sensitivity = -0.5;
+
+        touchpad = {
+          natural_scroll = true; # "Естественная" прокрутка
+          scroll_factor = 0.5;   # Скорость прокрутки 
+          tap-to-click = true;   # Тап вместо нажатия
+          clickfinger_behavior = true; # Правый клик двумя пальцами
+        };
       };
 
       bind = [
