@@ -62,92 +62,6 @@
     clang-tools
   ];
 
-  # Vim
-  # programs.vim = {
-  #   enable = true;
-
-  #   # Список плагинов
-  #   plugins = with pkgs.vimPlugins; [
-  #     vim-airline
-  #     vim-nix
-  #     nerdtree
-  #     coc-nvim
-  #     gruvbox-community
-  #     auto-pairs
-  #   ];
-
-  #   settings = {
-  #     number = true;
-  #     relativenumber = false;
-  #     shiftwidth = 2;
-  #     expandtab = true;
-  #     mouse = "a";
-  #   };
-
-
-  #   extraConfig = ''
-  #     " --- Визуал и интерфейс ---
-  #     syntax on
-  #     set termguicolors
-  #     set background=dark
-  #     colorscheme gruvbox
-  #     set clipboard=unnamedplus
-  #     set undofile
-
-  #     set undodir=~/.vim/undodir
-
-  #     " --- Настройка КУРСОРА (вертикальная линия в Insert mode) ---
-  #     " 1 или 2 - блок, 3 или 4 - подчеркивание, 5 или 6 - вертикальная линия
-  #     let &t_SI = "\e[6 q" " Режим вставки
-  #     let &t_SR = "\e[4 q" " Режим замены
-  #     let &t_EI = "\e[2 q" " Обычный режим (блок обратно)
-
-  #     " --- ОТКЛЮЧЕНИЕ подсказок (Inlay Hints: *args, *values) ---
-  #     autocmd User CocNvimInit call coc#config('inlayHint.enable', v:false)
-  #     autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.callArgumentNames', 'none')
-  #     autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.variableTypes', v:false)
-
-  #     " Горячая клавиша для дерева файлов
-  #     map <C-n> :NERDTreeToggle<CR>
-
-  #     " Цвета меню автодополнения
-  #     highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
-  #     highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
-  #     highlight CocFloating ctermbg=236 guibg=#282828
-
-  #     " --- Логика автодополнения и скобок ---
-  #     set completeopt=noinsert,menuone,noselect
-  #     set shortmess+=c
-  #     let g:AutoPairsMapCR = 0 
-
-  #     inoremap <silent><expr> <TAB>
-  #           \ coc#pum#visible() ? coc#pum#next(1) :
-  #           \ CheckBackspace() ? "\<Tab>" :
-  #           \ coc#refresh()
-  #     inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-  #     function! CheckBackspace() abort
-  #       let col = col('.') - 1
-  #       return !col || getline('.')[col - 1]  =~# '\s'
-  #     endfunction
-
-  #     inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-  #                                   \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>" 
-
-  #     inoremap <silent><expr> <space> coc#pum#visible() ? coc#pum#cancel() . "\<space>" : "\<space>"
-
-  #     nmap <silent> gd <Plug>(coc-definition)
-  #     nnoremap <silent> K :call ShowDocumentation()<CR>
-
-  #     function! ShowDocumentation()
-  #       if CocAction('hasProvider', 'hover')
-  #         call CocActionAsync('doHover')
-  #       else
-  #         call feedkeys('K', 'in')
-  #       endif
-  #     endfunction
-  #   '';
-  # };
 
   # NVim
   programs.neovim = {
@@ -218,16 +132,19 @@
       }
 
       -- 5. LSP (Языковые серверы)
-      -- Важно: Серверы должны быть в home.packages (см. шаг 4)
+      -- Подключаем возможности автодополнения к LSP (ВАЖНО!)
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local lspconfig = require('lspconfig')
 
-      -- Python (у тебя он есть в пакетах) [cite: 4]
-      lspconfig.pyright.setup{}
-      -- Nix (для конфигов)
-      lspconfig.nixd.setup{}
-      -- C/C++ (у тебя есть gcc/cmake) [cite: 4]
-      lspconfig.clangd.setup{}
+      -- Список твоих серверов
+      local servers = { 'pyright', 'nixd', 'clangd' }
 
+      -- Проходимся циклом и настраиваем каждый
+      for _, lsp in ipairs(servers) do
+        lspconfig[lsp].setup {
+          capabilities = capabilities,
+        }
+      end
       -- 6. AUTOPAIRS (Скобки)
       require('nvim-autopairs').setup{}
 
