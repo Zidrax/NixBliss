@@ -190,19 +190,12 @@
     };
     
     firewall = {
-      enable = true; # Убедись, что firewall включен
+      enable = true;
       allowedTCPPorts = [ 5000 27036 27037 ];
-      trustedInterfaces = [ "waydroid0" ];
       
       # Объединяем все UDP порты здесь:
       allowedUDPPorts = [ 
         27031 27036 4380          # Steam порты
-        10999 11000 12346 12347   # DST порты
-      ];
-
-      allowedUDPPortRanges = [
-        { from = 27000; to = 27015; }
-        { from = 27016; to = 27030; }
       ];
     };
 
@@ -237,9 +230,6 @@
     enable = true;
     tunMode = {
       enable = true;
-      # Дополнительные опции (опционально)
-      # deviceName = "tun0";
-      # implementation = "system";
     };
   };
 
@@ -257,7 +247,7 @@
       };
     };
     
-    waydroid.enable = true;
+    # waydroid.enable = true;
     incus.enable = true;
     lxc.lxcfs.enable = true;
   };
@@ -291,7 +281,7 @@
     # Игры и Wine
     steam wine winetricks lutris gamemode gamescope
     steam-run protonup-qt #virtualbox
-    waydroid
+    # waydroid
     genymotion
     
     # Python и разработка
@@ -314,6 +304,22 @@
     jami
     tun2proxy
     onlyoffice-desktopeditors
+
+    element-desktop
+
+    xournalpp
+    nodejs_20
+    amberol
+    imv
+    homebank
+    sqlitebrowser
+    sqlite
+    dbeaver-bin
+    qpwgraph
+    obs-studio
+
+    antigravity
+    glow apostrophe
   ];
 
   programs.nix-ld.enable = true;

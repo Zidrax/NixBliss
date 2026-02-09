@@ -10,21 +10,6 @@
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
-    element-desktop
-
-    xournalpp
-    nodejs_20
-    amberol
-    imv
-    homebank
-    sqlitebrowser
-    sqlite
-    dbeaver-bin
-    qpwgraph
-    obs-studio
-
-    antigravity
-    glow apostrophe
   ];
 
   # Vim
