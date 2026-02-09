@@ -108,8 +108,8 @@
       vim.opt.termguicolors = true
       vim.opt.undofile = true
       
-      -- Таймер автосейва (1 секунда)
-      vim.opt.updatetime = 1000 
+      -- Таймер автосейва (миллисекунды)
+      vim.opt.updatetime = 500
 
       -- Тема
       vim.o.background = "dark"
@@ -390,60 +390,7 @@
       };
     };
 
-    style = ''
-      * {
-          border: none;
-          border-radius: 0;
-          min-height: 0;
-          margin: 0;
-          padding: 0;
-          box-shadow: none;
-          text-shadow: none;
-          font-family: "JetBrains Mono Nerd Font", "Fira Code", sans-serif;
-          font-size: 14px;
-      }
-
-      #waybar {
-          background: transparent;
-      }
-
-      #workspaces button {
-          padding: 0 10px;
-          background: transparent;
-          transition: color 0.2s ease;
-          color: #f38ba8;
-      }
-
-      #window {
-          color: rgba(245, 255, 250, 0.6);
-          transition: color 0.2s ease;
-      }
-
-      #window:hover {
-          color: rgba(245, 255, 250, 1);
-      }
-
-      .modules-center {
-          background: rgba(0, 0, 0, 0.7);
-          border-radius: 152px;
-          padding: 7px 12px;
-      }
-
-      .modules-right {
-          background: rgba(0, 0, 0, 0.7);
-          border-radius: 152px;
-          padding: 7px 12px;
-      }
-
-      #language, #tray, #clock, #battery, #pulseaudio, #network, #cpu, #temperature, #backlight, #custom-power, #power-profiles-daemon, #bluetooth {
-          color: bisque;
-          padding: 0 7px;
-      }
-
-      #custom-power {
-          color: coral;
-      }
-    '';
+    style = builtins.readFile ./waybar/style.css;
   };
 
   #Rofi
