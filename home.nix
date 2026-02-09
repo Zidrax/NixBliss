@@ -5,7 +5,6 @@
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.11";
 
-  # Программы, которыми управляет Home Manager
   programs.home-manager.enable = true;
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
@@ -16,7 +15,7 @@
     telegram-desktop
     element-desktop
     zoom-us
-    networkmanager_dmenu brightnessctl 
+    networkmanager_dmenu brightnessctl pamixer blueman
     throne
 
     # --- Dev ---
@@ -46,8 +45,8 @@
     # --- Инструменты GUI ---
     nautilus            # Файловый менеджер
     gnome-tweaks        # Настройка GTK тем
-    #rofi-calc           # Калькулятор в Rofi
-    #rofi-emoji          # Эмодзи пикер
+    rofi-calc           # Калькулятор в Rofi
+    rofi-emoji          # Эмодзи пикер
     #hyprpicker          # Пипетка цвета
     hyprpaper           # Обои (если не запускаешь демоном)
 
@@ -493,44 +492,77 @@
   text = ''
     #!/bin/sh
 
-    # --- 1. Получаем текущие данные ---
+    # --- 1. СБОР ДАННЫХ ---
 
-    # Сенса (Hyprland): конвертируем из -1..1 в 0..1
+    # Сенса: -1..1 -> 0..1
     S_REAL=$(hyprctl getoption input:sensitivity | grep "float:" | awk '{print $2}')
     S_USER=$(awk -v val="$S_REAL" 'BEGIN {print (val + 1) / 2}')
 
-    # Яркость (Brightnessctl): берем проценты
-    # 2>/dev/null прячет ошибки, если это комп без экрана (стационарник)
-    B_REAL=$(brightnessctl -m 2>/dev/null | awk -F, '{print $4}' | tr -d %)
-    if [ -z "$B_REAL" ]; then B_REAL="N/A"; fi
+    # Яркость: %
+    B_VAL=$(brightnessctl -m 2>/dev/null | awk -F, '{print $4}' | tr -d %)
+    [ -z "$B_VAL" ] && B_VAL="N/A"
 
-    # --- 2. Главное меню ---
-    # Мы не задаем стили здесь, берется твой дефолтный конфиг (500px высоты)
+    # Звук: % (через pamixer, так надежнее)
+    VOL_VAL=$(pamixer --get-volume)
+    MIC_VAL=$(pamixer --default-source --get-volume)
 
-    CHOICE=$(echo -e "Sensitivity (Current: $S_USER)\nBrightness (Current: $B_REAL%)" | rofi -dmenu -p "Settings")
+    # --- 2. ГЛАВНОЕ МЕНЮ ---
+    # Формат: "Иконка  Название (Текущее значение)"
 
-    # --- 3. Обработка выбора ---
+    # Опции меню
+    OPT_WIFI="  WiFi Menu"
+    OPT_BT="  Bluetooth"
+    OPT_SENS="  Sensitivity ($S_USER)"
+    OPT_BRIGHT="  Brightness ($B_VAL%)"
+    OPT_VOL="  Volume ($VOL_VAL%)"
+    OPT_MIC="  Mic Volume ($MIC_VAL%)"
+
+    # Показываем Rofi (высота 500px берется из твоего глобального конфига)
+    CHOICE=$(echo -e "$OPT_WIFI\n$OPT_SENS\n$OPT_BRIGHT\n$OPT_VOL\n$OPT_MIC\n$OPT_BT" | rofi -dmenu -p "Settings")
+
+    # --- 3. ЛОГИКА ---
 
     case "$CHOICE" in
-        Sensitivity*)
-            # Запрашиваем число. listview: enabled: false уберет лишние надписи "элемент не найден",
-            # но оставит окно большого размера (пустое место снизу, как ты хотел).
-            VAL=$(echo "" | rofi -dmenu -p "Enter Sens (0 - 1)" -theme-str 'listview { enabled: false; }')
-
-            if [ -n "$VAL" ]; then
-                # Конвертируем обратно: 0..1 -> -1..1
-                NEW_SENS=$(awk -v val="$VAL" 'BEGIN {print val * 2 - 1}')
-                hyprctl keyword input:sensitivity "$NEW_SENS"
-                notify-send "Sensitivity" "Set to $VAL"
+        "$OPT_WIFI")
+            # Запускает networkmanager_dmenu (если установлен) или nmtui в терминале
+            if command -v networkmanager_dmenu >/dev/null; then
+                networkmanager_dmenu
+            else
+                kitty -e nmtui
             fi
             ;;
 
-        Brightness*)
-            VAL=$(echo "" | rofi -dmenu -p "Enter Brightness (0 - 100)" -theme-str 'listview { enabled: false; }')
+        "$OPT_BT")
+            # Запускает графический менеджер Bluetooth
+            blueman-manager
+            ;;
 
+        "$OPT_SENS")
+            VAL=$(echo "" | rofi -dmenu -p "Sens (0 - 1)" -theme-str 'listview { enabled: false; }')
+            if [ -n "$VAL" ]; then
+                NEW_SENS=$(awk -v val="$VAL" 'BEGIN {print val * 2 - 1}')
+                hyprctl keyword input:sensitivity "$NEW_SENS"
+            fi
+            ;;
+
+        "$OPT_BRIGHT")
+            VAL=$(echo "" | rofi -dmenu -p "Brightness (0 - 100)" -theme-str 'listview { enabled: false; }')
             if [ -n "$VAL" ]; then
                 brightnessctl set "$VAL"%
-                # Уведомление не нужно, ты и так увидишь, как экран поменяется
+            fi
+            ;;
+
+        "$OPT_VOL")
+            VAL=$(echo "" | rofi -dmenu -p "Volume (0 - 100)" -theme-str 'listview { enabled: false; }')
+            if [ -n "$VAL" ]; then
+                pamixer --set-volume "$VAL"
+            fi
+            ;;
+
+        "$OPT_MIC")
+            VAL=$(echo "" | rofi -dmenu -p "Mic Level (0 - 100)" -theme-str 'listview { enabled: false; }')
+            if [ -n "$VAL" ]; then
+                pamixer --default-source --set-volume "$VAL"
             fi
             ;;
     esac
