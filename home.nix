@@ -77,6 +77,7 @@
       lualine-nvim          # Замена airline
       nvim-web-devicons     # Иконки для файлов
       nvim-tree-lua         # Замена NERDTree
+      rainbow-delimiters-nvim
 
       # --- Основа (LSP и Treesitter) ---
       nvim-treesitter.withAllGrammars  # Умная подсветка для всего
@@ -95,35 +96,49 @@
       comment-nvim          # Быстрое комментирование (gcc)
     ];
 
-    # Твой конфиг переписанный на Lua
     extraLuaConfig = ''
-      -- 1. БАЗОВЫЕ НАСТРОЙКИ (перенос твоих settings)
+      -- 1. БАЗОВЫЕ НАСТРОЙКИ
       vim.opt.number = true
       vim.opt.relativenumber = false
-      vim.opt.shiftwidth = 2      -- [cite: 11]
+      vim.opt.shiftwidth = 2
       vim.opt.tabstop = 2
-      vim.opt.expandtab = true    -- [cite: 11]
-      vim.opt.mouse = "a"         -- [cite: 12]
-      vim.opt.clipboard = "unnamedplus" -- [cite: 12]
+      vim.opt.expandtab = true
+      vim.opt.mouse = "a"
+      vim.opt.clipboard = "unnamedplus"
       vim.opt.termguicolors = true
       vim.opt.undofile = true
+      
+      -- Настройка таймера для автосейва (1000 мс = 1 секунда)
+      vim.opt.updatetime = 1000 
 
-      -- Тема Gruvbox
+      -- Тема
       vim.o.background = "dark"
       vim.cmd("colorscheme gruvbox")
 
-      -- 2. НАСТРОЙКА LUALINE (статусбар)
-      require('lualine').setup {
-        options = { theme = 'gruvbox' }
-      }
+      -- 2. LUALINE
+      require('lualine').setup { options = { theme = 'gruvbox' } }
 
-      -- 3. НАСТРОЙКА NVIM-TREE (файловое дерево)
-      -- Отключаем netrw (стандартный проводник), так надо для nvim-tree
+      -- 3. NVIM-TREE (Файловый менеджер)
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
+      local api = require("nvim-tree.api")
       require("nvim-tree").setup()
-      -- Хоткей Ctrl+n как у тебя был [cite: 14]
-      vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { silent = true })
+
+      -- УМНАЯ ЛОГИКА CTRL+n / WIN+n
+      local function toggle_tree_focus()
+        if not api.tree.is_visible() then
+          -- Если закрыто -> открыть
+          api.tree.open()
+        elseif api.tree.is_visible() and not api.tree.is_focused() then
+          -- Если открыто, но мы в файле -> перекинуть фокус на дерево
+          api.tree.focus()
+        else
+          -- Если мы в дереве -> закрыть
+          api.tree.close()
+        end
+      end
+      
+      vim.keymap.set('n', '<C-n>', toggle_tree_focus, { silent = true })
 
       -- 4. TREESITTER (Подсветка)
       require'nvim-treesitter.configs'.setup {
@@ -131,16 +146,12 @@
         indent = { enable = true },
       }
 
-      -- 5. LSP (Языковые серверы)
+      -- 5. LSP (Языковые серверы для Neovim 0.11+)
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local servers = { 'pyright', 'nixd', 'clangd' }
 
       for _, name in ipairs(servers) do
-        -- Включаем сервер (аналог старого setup)
         vim.lsp.enable(name)
-        
-        -- Добавляем capabilities для автодополнения (cmp)
-        -- Используем безопасное обновление таблицы конфигурации
         if vim.lsp.config[name] then
             vim.lsp.config[name].capabilities = capabilities
         else
@@ -148,13 +159,11 @@
         end
       end
 
-
-      -- 6. AUTOPAIRS (Скобки)
+      -- 6. AUTOPAIRS (Авто-скобки)
       require('nvim-autopairs').setup{}
 
-      -- 7. АВТОДОПОЛНЕНИЕ (CMP) - Самая сложная часть, замена CoC
+      -- 7. АВТОДОПОЛНЕНИЕ (CMP)
       local cmp = require'cmp'
-
       cmp.setup({
         snippet = {
           expand = function(args)
@@ -166,9 +175,9 @@
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Enter выбирает
-          ['<Tab>'] = cmp.mapping.select_next_item(),        -- Tab листает вниз
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),      -- Shift+Tab листает вверх
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
         }),
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
@@ -178,14 +187,20 @@
         })
       })
 
-      -- 8. AUTOSAVE (Автосохранение при потере фокуса)
-      vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+      -- 8. АВТОСЕЙВ (По таймеру)
+      -- Срабатывает, если ты ничего не нажимал 1 секунду (updatetime)
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        group = vim.api.nvim_create_augroup("autosave", {}),
         callback = function()
           if vim.bo.modified and not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
             vim.api.nvim_command('silent update')
           end
         end,
       })
+
+      -- 9. RAINBOW DELIMITERS (Радужные скобки)
+      -- Подключение модуля (настройки по умолчанию обычно идеальны)
+      require('rainbow-delimiters.setup').setup { }
     '';
   };
 
