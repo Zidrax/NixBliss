@@ -743,10 +743,21 @@
     };
   };
 
-  # Переносим конфиг обоев
-  home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload = ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
-    wallpaper = DP-1, ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
-    wallpaper = HDMI-A-1, ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
-  '';
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = false;
+      splash_offset = 2.0;
+
+      preload = [
+        "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
+      ];
+
+      wallpaper = [
+        "DP-1,${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
+        "HDMI-A-1,${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
+      ];
+    };
+  };
 }
