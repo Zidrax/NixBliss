@@ -146,9 +146,8 @@
       v = "vim";
     };
 
-    # Всё, что нельзя описать стандартными опциями, пойдет сюда
-    initContent = ''
-      # Твой ручной код из .zshrc
+    initExtra = ''
+      zstyle ':completion:*:*:*:*' ignored-patterns '*.lock'
     '';
 
     # Если используешь Oh My Zsh
