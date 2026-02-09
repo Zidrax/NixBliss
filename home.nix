@@ -24,7 +24,7 @@
     obs-studio
 
     antigravity
-    glow
+    glow apostrophe
   ];
 
   # Vim
