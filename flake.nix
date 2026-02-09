@@ -21,6 +21,7 @@
             { nixpkgs.hostPlatform = "x86_64-linux"; }
             ./default.nix
             ./hardware-configuration.nix
+            ./pc-only.nix
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

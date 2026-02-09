@@ -364,12 +364,5 @@
     # Для численных вычислений
     openblas
   ];
-
-  # --- Swap ---
-  swapDevices = [{
-    device = "/dev/sda1";
-    priority = 0;
-  }];
-  
 }
 
