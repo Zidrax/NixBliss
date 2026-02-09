@@ -57,6 +57,9 @@
       set background=dark
       colorscheme gruvbox
       set clipboard=unnamedplus
+      set undofile
+
+      set undodir=~/.vim/undodir
 
       " --- Настройка КУРСОРА (вертикальная линия в Insert mode) ---
       " 1 или 2 - блок, 3 или 4 - подчеркивание, 5 или 6 - вертикальная линия
