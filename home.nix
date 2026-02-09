@@ -56,92 +56,206 @@
     lutris
     protonup-qt         # Установка Proton-GE для Steam
     steam-run           # Запуск любых бинарников
+
+    nixd
+    pyright
+    clang-tools
   ];
 
   # Vim
-  programs.vim = {
-    enable = true;
+  # programs.vim = {
+  #   enable = true;
 
-    # Список плагинов
+  #   # Список плагинов
+  #   plugins = with pkgs.vimPlugins; [
+  #     vim-airline
+  #     vim-nix
+  #     nerdtree
+  #     coc-nvim
+  #     gruvbox-community
+  #     auto-pairs
+  #   ];
+
+  #   settings = {
+  #     number = true;
+  #     relativenumber = false;
+  #     shiftwidth = 2;
+  #     expandtab = true;
+  #     mouse = "a";
+  #   };
+
+
+  #   extraConfig = ''
+  #     " --- Визуал и интерфейс ---
+  #     syntax on
+  #     set termguicolors
+  #     set background=dark
+  #     colorscheme gruvbox
+  #     set clipboard=unnamedplus
+  #     set undofile
+
+  #     set undodir=~/.vim/undodir
+
+  #     " --- Настройка КУРСОРА (вертикальная линия в Insert mode) ---
+  #     " 1 или 2 - блок, 3 или 4 - подчеркивание, 5 или 6 - вертикальная линия
+  #     let &t_SI = "\e[6 q" " Режим вставки
+  #     let &t_SR = "\e[4 q" " Режим замены
+  #     let &t_EI = "\e[2 q" " Обычный режим (блок обратно)
+
+  #     " --- ОТКЛЮЧЕНИЕ подсказок (Inlay Hints: *args, *values) ---
+  #     autocmd User CocNvimInit call coc#config('inlayHint.enable', v:false)
+  #     autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.callArgumentNames', 'none')
+  #     autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.variableTypes', v:false)
+
+  #     " Горячая клавиша для дерева файлов
+  #     map <C-n> :NERDTreeToggle<CR>
+
+  #     " Цвета меню автодополнения
+  #     highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
+  #     highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
+  #     highlight CocFloating ctermbg=236 guibg=#282828
+
+  #     " --- Логика автодополнения и скобок ---
+  #     set completeopt=noinsert,menuone,noselect
+  #     set shortmess+=c
+  #     let g:AutoPairsMapCR = 0 
+
+  #     inoremap <silent><expr> <TAB>
+  #           \ coc#pum#visible() ? coc#pum#next(1) :
+  #           \ CheckBackspace() ? "\<Tab>" :
+  #           \ coc#refresh()
+  #     inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+  #     function! CheckBackspace() abort
+  #       let col = col('.') - 1
+  #       return !col || getline('.')[col - 1]  =~# '\s'
+  #     endfunction
+
+  #     inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+  #                                   \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>" 
+
+  #     inoremap <silent><expr> <space> coc#pum#visible() ? coc#pum#cancel() . "\<space>" : "\<space>"
+
+  #     nmap <silent> gd <Plug>(coc-definition)
+  #     nnoremap <silent> K :call ShowDocumentation()<CR>
+
+  #     function! ShowDocumentation()
+  #       if CocAction('hasProvider', 'hover')
+  #         call CocActionAsync('doHover')
+  #       else
+  #         call feedkeys('K', 'in')
+  #       endif
+  #     endfunction
+  #   '';
+  # };
+
+  # NVim
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+
+    # Ставим плагины через Nix (воспроизводимость!)
     plugins = with pkgs.vimPlugins; [
-      vim-airline
-      vim-nix
-      nerdtree
-      coc-nvim
-      gruvbox-community
-      auto-pairs
+      # --- UI и Внешний вид ---
+      gruvbox-nvim          # Твоя тема, но на Lua
+      lualine-nvim          # Замена airline
+      nvim-web-devicons     # Иконки для файлов
+      nvim-tree-lua         # Замена NERDTree
+
+      # --- Основа (LSP и Treesitter) ---
+      nvim-treesitter.withAllGrammars  # Умная подсветка для всего
+      nvim-lspconfig        # Настройки LSP серверов
+
+      # --- Автодополнение (Замена CoC) ---
+      nvim-cmp              # Движок автодополнения
+      cmp-nvim-lsp          # Источник: LSP
+      cmp-buffer            # Источник: слова из буфера
+      cmp-path              # Источник: пути к файлам
+      luasnip               # Сниппеты (нужны для cmp)
+      cmp_luasnip
+
+      # --- Утилиты ---
+      nvim-autopairs        # Авто-скобки
+      comment-nvim          # Быстрое комментирование (gcc)
     ];
 
-    settings = {
-      number = true;
-      relativenumber = false;
-      shiftwidth = 2;
-      expandtab = true;
-      mouse = "a";
-    };
+    # Твой конфиг переписанный на Lua
+    extraLuaConfig = ''
+      -- 1. БАЗОВЫЕ НАСТРОЙКИ (перенос твоих settings)
+      vim.opt.number = true
+      vim.opt.relativenumber = false
+      vim.opt.shiftwidth = 2      -- [cite: 11]
+      vim.opt.tabstop = 2
+      vim.opt.expandtab = true    -- [cite: 11]
+      vim.opt.mouse = "a"         -- [cite: 12]
+      vim.opt.clipboard = "unnamedplus" -- [cite: 12]
+      vim.opt.termguicolors = true
+      vim.opt.undofile = true
 
+      -- Тема Gruvbox
+      vim.o.background = "dark"
+      vim.cmd("colorscheme gruvbox")
 
-    extraConfig = ''
-      " --- Визуал и интерфейс ---
-      syntax on
-      set termguicolors
-      set background=dark
-      colorscheme gruvbox
-      set clipboard=unnamedplus
-      set undofile
+      -- 2. НАСТРОЙКА LUALINE (статусбар)
+      require('lualine').setup {
+        options = { theme = 'gruvbox' }
+      }
 
-      set undodir=~/.vim/undodir
+      -- 3. НАСТРОЙКА NVIM-TREE (файловое дерево)
+      -- Отключаем netrw (стандартный проводник), так надо для nvim-tree
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+      require("nvim-tree").setup()
+      -- Хоткей Ctrl+n как у тебя был [cite: 14]
+      vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { silent = true })
 
-      " --- Настройка КУРСОРА (вертикальная линия в Insert mode) ---
-      " 1 или 2 - блок, 3 или 4 - подчеркивание, 5 или 6 - вертикальная линия
-      let &t_SI = "\e[6 q" " Режим вставки
-      let &t_SR = "\e[4 q" " Режим замены
-      let &t_EI = "\e[2 q" " Обычный режим (блок обратно)
+      -- 4. TREESITTER (Подсветка)
+      require'nvim-treesitter.configs'.setup {
+        highlight = { enable = true },
+        indent = { enable = true },
+      }
 
-      " --- ОТКЛЮЧЕНИЕ подсказок (Inlay Hints: *args, *values) ---
-      autocmd User CocNvimInit call coc#config('inlayHint.enable', v:false)
-      autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.callArgumentNames', 'none')
-      autocmd User CocNvimInit call coc#config('python.analysis.inlayHints.variableTypes', v:false)
+      -- 5. LSP (Языковые серверы)
+      -- Важно: Серверы должны быть в home.packages (см. шаг 4)
+      local lspconfig = require('lspconfig')
 
-      " Горячая клавиша для дерева файлов
-      map <C-n> :NERDTreeToggle<CR>
+      -- Python (у тебя он есть в пакетах) [cite: 4]
+      lspconfig.pyright.setup{}
+      -- Nix (для конфигов)
+      lspconfig.nixd.setup{}
+      -- C/C++ (у тебя есть gcc/cmake) [cite: 4]
+      lspconfig.clangd.setup{}
 
-      " Цвета меню автодополнения
-      highlight Pmenu ctermbg=236 guibg=#282828 ctermfg=250 guifg=#ebdbb2
-      highlight PmenuSel ctermbg=24 guibg=#458588 ctermfg=255 guifg=#ffffff
-      highlight CocFloating ctermbg=236 guibg=#282828
+      -- 6. AUTOPAIRS (Скобки)
+      require('nvim-autopairs').setup{}
 
-      " --- Логика автодополнения и скобок ---
-      set completeopt=noinsert,menuone,noselect
-      set shortmess+=c
-      let g:AutoPairsMapCR = 0 
+      -- 7. АВТОДОПОЛНЕНИЕ (CMP) - Самая сложная часть, замена CoC
+      local cmp = require'cmp'
 
-      inoremap <silent><expr> <TAB>
-            \ coc#pum#visible() ? coc#pum#next(1) :
-            \ CheckBackspace() ? "\<Tab>" :
-            \ coc#refresh()
-      inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-      function! CheckBackspace() abort
-        let col = col('.') - 1
-        return !col || getline('.')[col - 1]  =~# '\s'
-      endfunction
-
-      inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                                    \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>" 
-
-      inoremap <silent><expr> <space> coc#pum#visible() ? coc#pum#cancel() . "\<space>" : "\<space>"
-
-      nmap <silent> gd <Plug>(coc-definition)
-      nnoremap <silent> K :call ShowDocumentation()<CR>
-
-      function! ShowDocumentation()
-        if CocAction('hasProvider', 'hover')
-          call CocActionAsync('doHover')
-        else
-          call feedkeys('K', 'in')
-        endif
-      endfunction
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Enter выбирает
+          ['<Tab>'] = cmp.mapping.select_next_item(),        -- Tab листает вниз
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),      -- Shift+Tab листает вверх
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+        }, {
+          { name = 'buffer' },
+        })
+      })
     '';
   };
 
