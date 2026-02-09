@@ -622,6 +622,7 @@
         "$mainMod, J, togglesplit"
         "$mainMod SHIFT, V, exec, wl-paste > /tmp/clip_img && imv /tmp/clip_img"
         "$mainMod, I, exec, ~/.local/bin/set-sensitivity.sh"
+        "$mainMod, L, exec, hyprlock"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
@@ -677,6 +678,40 @@
     extraConfig = ''
       windowrule = suppressevent maximize, class:.*
     '';
+  };
+
+  programs.hyprlock = {
+    enable = true;
+    settings = {
+      general = {
+        no_fade_in = true;
+        grace = 0;
+        disable_loading_bar = true;
+      };
+
+      background = [
+        {
+          path = "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"; # Твои обои
+          blur_passes = 2; # Размытие (0 - выкл)
+        }
+      ];
+
+      input-field = [
+        {
+          size = "250, 50";
+          position = "0, -20";
+          monitor = "";
+          dots_center = true;
+          fade_on_empty = false;
+          font_color = "rgb(205, 214, 244)";
+          inner_color = "rgb(30, 30, 46)";
+          outer_color = "rgb(180, 190, 254)";
+          outline_thickness = 5;
+          placeholder_text = "Password...";
+          shadow_passes = 2;
+        }
+      ];
+    };
   };
 
   # Переносим конфиг обоев
