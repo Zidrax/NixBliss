@@ -132,19 +132,23 @@
       }
 
       -- 5. LSP (Языковые серверы)
-      -- Подключаем возможности автодополнения к LSP (ВАЖНО!)
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local lspconfig = require('lspconfig')
-
-      -- Список твоих серверов
       local servers = { 'pyright', 'nixd', 'clangd' }
 
-      -- Проходимся циклом и настраиваем каждый
-      for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup {
-          capabilities = capabilities,
-        }
+      for _, name in ipairs(servers) do
+        -- Включаем сервер (аналог старого setup)
+        vim.lsp.enable(name)
+        
+        -- Добавляем capabilities для автодополнения (cmp)
+        -- Используем безопасное обновление таблицы конфигурации
+        if vim.lsp.config[name] then
+            vim.lsp.config[name].capabilities = capabilities
+        else
+            vim.lsp.config[name] = { capabilities = capabilities }
+        end
       end
+
+
       -- 6. AUTOPAIRS (Скобки)
       require('nvim-autopairs').setup{}
 
