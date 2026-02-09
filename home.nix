@@ -751,8 +751,8 @@
 
   # Переносим конфиг обоев
   home.file.".config/hypr/hyprpaper.conf".text = ''
-    preload = /home/User/Pictures/Wallpaper/wl1.jpg
-    wallpaper = DP-1, /home/User/Pictures/Wallpaper/wl1.jpg
-    wallpaper = HDMI-A-1, /home/User/Pictures/Wallpaper/wl1.jpg
+    preload = ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
+    wallpaper = DP-1, ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
+    wallpaper = HDMI-A-1, ${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg
   '';
 }
