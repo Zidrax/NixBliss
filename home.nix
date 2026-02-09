@@ -108,7 +108,7 @@
       vim.opt.termguicolors = true
       vim.opt.undofile = true
       
-      -- Настройка таймера для автосейва (1000 мс = 1 секунда)
+      -- Таймер автосейва (1 секунда)
       vim.opt.updatetime = 1000 
 
       -- Тема
@@ -124,45 +124,57 @@
       local api = require("nvim-tree.api")
       require("nvim-tree").setup()
 
-      -- УМНАЯ ЛОГИКА CTRL+n / WIN+n
+      -- ИСПРАВЛЕННАЯ ЛОГИКА WIN+N (Без is_focused)
       local function toggle_tree_focus()
         if not api.tree.is_visible() then
-          -- Если закрыто -> открыть
           api.tree.open()
-        elseif api.tree.is_visible() and not api.tree.is_focused() then
-          -- Если открыто, но мы в файле -> перекинуть фокус на дерево
-          api.tree.focus()
         else
-          -- Если мы в дереве -> закрыть
-          api.tree.close()
+          -- Проверяем, находится ли фокус сейчас на дереве
+          if vim.bo.filetype == "NvimTree" then
+            api.tree.close()
+          else
+            api.tree.focus()
+          end
         end
       end
       
       vim.keymap.set('n', '<C-n>', toggle_tree_focus, { silent = true })
 
-      -- 4. TREESITTER (Подсветка)
+      -- 4. TREESITTER
       require'nvim-treesitter.configs'.setup {
         highlight = { enable = true },
         indent = { enable = true },
       }
 
-      -- 5. LSP (Языковые серверы для Neovim 0.11+)
+      -- 5. LSP (ФИКС ДЛЯ NEOVIM 0.11)
+      -- Мы больше не делаем require('lspconfig').setup, это вызывает ошибку.
+      -- Мы используем нативный vim.lsp.enable
+      
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local servers = { 'pyright', 'nixd', 'clangd' }
 
+      -- Функция для добавления дефолтных конфигов из lspconfig в vim.lsp.config
+      -- Это хак для clean setup на unstable версиях
+      local lsp_configs = require('lspconfig.configs')
+
       for _, name in ipairs(servers) do
-        vim.lsp.enable(name)
+        -- Если конфига еще нет в глобальной таблице vim, берем дефолтный из плагина
+        if not vim.lsp.config[name] and lsp_configs[name] then
+           vim.lsp.config[name] = lsp_configs[name].default_config
+        end
+        
+        -- Добавляем capabilities (автодополнение)
         if vim.lsp.config[name] then
             vim.lsp.config[name].capabilities = capabilities
-        else
-            vim.lsp.config[name] = { capabilities = capabilities }
+            -- Включаем сервер
+            vim.lsp.enable(name)
         end
       end
 
-      -- 6. AUTOPAIRS (Авто-скобки)
+      -- 6. AUTOPAIRS
       require('nvim-autopairs').setup{}
 
-      -- 7. АВТОДОПОЛНЕНИЕ (CMP)
+      -- 7. CMP (Автодополнение)
       local cmp = require'cmp'
       cmp.setup({
         snippet = {
@@ -187,8 +199,7 @@
         })
       })
 
-      -- 8. АВТОСЕЙВ (По таймеру)
-      -- Срабатывает, если ты ничего не нажимал 1 секунду (updatetime)
+      -- 8. АВТОСЕЙВ (Работает по таймеру updatetime)
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         group = vim.api.nvim_create_augroup("autosave", {}),
         callback = function()
@@ -198,10 +209,10 @@
         end,
       })
 
-      -- 9. RAINBOW DELIMITERS (Радужные скобки)
-      -- Подключение модуля (настройки по умолчанию обычно идеальны)
+      -- 9. RAINBOW DELIMITERS
       require('rainbow-delimiters.setup').setup { }
     '';
+
   };
 
   # Firefix  
