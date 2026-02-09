@@ -206,16 +206,6 @@
   programs = {
     zsh = {
       enable = true;
-      #ohMyZsh = {
-      #  enable = true;
-      #  plugins = [ "git" "python" "sudo" "docker" ];
-      #  theme = "agnoster";
-      #};
-      #autosuggestions.enable = true;
-      #syntaxHighlighting.enable = true;
-      #interactiveShellInit = ''
-      #  eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-      #'';
     };
     
     steam = {
@@ -262,64 +252,30 @@
 
   # --- Системные пакеты ---
   environment.systemPackages = with pkgs; [
-    # Основные утилиты
-    vim-full wget git curl unzip btop micro direnv usbutils
-    
-    # Графические приложения
-    firefox chromium vscode discord telegram-desktop obsidian
-    gimp libreoffice #  zoom-us teamspeak3 obs-studio
-    nautilus gnome-tweaks pavucontrol piper prismlauncher
-    rofi rofi-calc rofi-emoji kitty waybar
-    networkmanagerapplet blueman bluez bluez-tools
-    
-    # Wayland утилиты
-    grim slurp wl-clipboard
-    
-    # Hyprland
-    hyprpaper hyprpicker
-    
-    # Игры и Wine
-    steam wine winetricks lutris gamemode gamescope
-    steam-run protonup-qt #virtualbox
-    # waydroid
-    genymotion
-    
-    # Python и разработка
-    uv
-    gcc cmake gnumake
-    
-    # Сеть и VPN
-    openvpn onedrive
-    
-    # Драйверы и устройства
-    nvidia-vaapi-driver opentabletdriver libratbag
-    
-    # Прочее
-    arduino-ide xorg.xhost os-prober nixos-generators
+    # --- Системные утилиты (CLI) ---
+    vim wget git curl unzip btop micro direnv usbutils
+    pciutils lshw file tree killall
 
-    # Потом разбить на категории
-    throne 
-    #v2rayn
-    networkmanager_dmenu
-    jami
-    tun2proxy
-    onlyoffice-desktopeditors
+    # --- Звук и Сеть ---
+    pavucontrol     # Контроль звука (нужен всем)
+    networkmanagerapplet
+    blueman         # Bluetooth менеджер
 
-    element-desktop
+    # --- Wayland база (скриншоты, буфер) ---
+    wl-clipboard    # Буфер обмена
+    grim slurp      # Скриншоты (можно и в home, но удобно иметь глобально)
 
-    xournalpp
-    nodejs_20
-    amberol
-    imv
-    homebank
-    sqlitebrowser
-    sqlite
-    dbeaver-bin
-    qpwgraph
-    obs-studio
+    # --- Драйверы и железо ---
+    nvidia-vaapi-driver
+    opentabletdriver
 
-    antigravity
-    glow apostrophe
+    # --- Администрирование ---
+    os-prober
+    nixos-generators
+    xorg.xhost
+
+    # --- Совместимость ---
+    wine winetricks
   ];
 
   programs.nix-ld.enable = true;

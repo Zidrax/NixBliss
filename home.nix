@@ -10,6 +10,52 @@
 
   # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
+    # --- Интернет и Общение ---
+    chromium            # Запасной браузер
+    discord
+    telegram-desktop
+    element-desktop
+    zoom-us
+    networkmanager_dmenu
+    throne
+
+    # --- Dev ---
+    vscode antigravity
+    dbeaver-bin         # Data bases
+    sqlitebrowser
+    sqlite
+    nodejs_20
+    uv                  # Python tools
+    gcc cmake gnumake   # C/C++ сборка
+    arduino-ide
+
+    # --- Офис и Заметки ---
+    obsidian
+    libreoffice
+    homebank            # Учет финансов
+    xournalpp           # Рукописные заметки
+    glow                # Markdown в терминале
+    apostrophe          # Markdown редактор
+
+    # --- Графика и Медиа ---
+    gimp
+    imv                 # Просмотрщик картинок (легкий)
+    amberol             # Музыка
+    obs-studio
+
+    # --- Инструменты GUI ---
+    nautilus            # Файловый менеджер
+    gnome-tweaks        # Настройка GTK тем
+    #rofi-calc           # Калькулятор в Rofi
+    #rofi-emoji          # Эмодзи пикер
+    #hyprpicker          # Пипетка цвета
+    hyprpaper           # Обои (если не запускаешь демоном)
+
+    # --- Игры ---
+    prismlauncher       # Minecraft
+    lutris
+    protonup-qt         # Установка Proton-GE для Steam
+    steam-run           # Запуск любых бинарников
   ];
 
   # Vim
