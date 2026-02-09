@@ -146,7 +146,7 @@
       v = "vim";
     };
 
-    initExtra = ''
+    initContent = ''
       zstyle ':completion:*:*:*:*' ignored-patterns '*.lock'
     '';
 

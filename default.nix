@@ -56,7 +56,7 @@
   hardware = {
     # NVIDIA
     nvidia = {
-      open = true;
+      open = true; # ВАЖНО - для старых карт поменять на false 
       modesetting.enable = true;
       forceFullCompositionPipeline = true;
       powerManagement = {
@@ -206,16 +206,16 @@
   programs = {
     zsh = {
       enable = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = [ "git" "python" "sudo" "docker" ];
-        theme = "agnoster";
-      };
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      interactiveShellInit = ''
-        eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-      '';
+      #ohMyZsh = {
+      #  enable = true;
+      #  plugins = [ "git" "python" "sudo" "docker" ];
+      #  theme = "agnoster";
+      #};
+      #autosuggestions.enable = true;
+      #syntaxHighlighting.enable = true;
+      #interactiveShellInit = ''
+      #  eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+      #'';
     };
     
     steam = {
