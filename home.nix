@@ -16,7 +16,7 @@
     telegram-desktop
     element-desktop
     zoom-us
-    networkmanager_dmenu
+    networkmanager_dmenu brightnessctl 
     throne
 
     # --- Dev ---
@@ -487,6 +487,55 @@
       esac
     '';
   };
+
+  home.file.".local/bin/set-sensitivity.sh" = {
+  executable = true;
+  text = ''
+    #!/bin/sh
+
+    # --- 1. Получаем текущие данные ---
+
+    # Сенса (Hyprland): конвертируем из -1..1 в 0..1
+    S_REAL=$(hyprctl getoption input:sensitivity | grep "float:" | awk '{print $2}')
+    S_USER=$(awk -v val="$S_REAL" 'BEGIN {print (val + 1) / 2}')
+
+    # Яркость (Brightnessctl): берем проценты
+    # 2>/dev/null прячет ошибки, если это комп без экрана (стационарник)
+    B_REAL=$(brightnessctl -m 2>/dev/null | awk -F, '{print $4}' | tr -d %)
+    if [ -z "$B_REAL" ]; then B_REAL="N/A"; fi
+
+    # --- 2. Главное меню ---
+    # Мы не задаем стили здесь, берется твой дефолтный конфиг (500px высоты)
+
+    CHOICE=$(echo -e "Sensitivity (Current: $S_USER)\nBrightness (Current: $B_REAL%)" | rofi -dmenu -p "Settings")
+
+    # --- 3. Обработка выбора ---
+
+    case "$CHOICE" in
+        Sensitivity*)
+            # Запрашиваем число. listview: enabled: false уберет лишние надписи "элемент не найден",
+            # но оставит окно большого размера (пустое место снизу, как ты хотел).
+            VAL=$(echo "" | rofi -dmenu -p "Enter Sens (0 - 1)" -theme-str 'listview { enabled: false; }')
+
+            if [ -n "$VAL" ]; then
+                # Конвертируем обратно: 0..1 -> -1..1
+                NEW_SENS=$(awk -v val="$VAL" 'BEGIN {print val * 2 - 1}')
+                hyprctl keyword input:sensitivity "$NEW_SENS"
+                notify-send "Sensitivity" "Set to $VAL"
+            fi
+            ;;
+
+        Brightness*)
+            VAL=$(echo "" | rofi -dmenu -p "Enter Brightness (0 - 100)" -theme-str 'listview { enabled: false; }')
+
+            if [ -n "$VAL" ]; then
+                brightnessctl set "$VAL"%
+                # Уведомление не нужно, ты и так увидишь, как экран поменяется
+            fi
+            ;;
+    esac
+  '';
+};
 
   # Hyprland
   wayland.windowManager.hyprland = {
