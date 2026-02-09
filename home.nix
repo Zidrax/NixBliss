@@ -652,6 +652,7 @@
         "$mainMod, P, pseudo"
         "$mainMod, J, togglesplit"
         "$mainMod SHIFT, V, exec, wl-paste > /tmp/clip_img && imv /tmp/clip_img"
+        "$mainMod, I, exec, ~/.local/bin/set-sensitivity.sh"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
