@@ -684,31 +684,60 @@
     enable = true;
     settings = {
       general = {
-        no_fade_in = true;
+        no_fade_in = false;
         grace = 0;
         disable_loading_bar = true;
       };
 
       background = [
         {
-          path = "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"; # Твои обои
-          blur_passes = 2; # Размытие (0 - выкл)
+          path = "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"; # Твой путь к обоям
+          blur_passes = 2; # Сила размытия (0 - выкл)
+          blur_size = 7;
+          noise = 0.0117;
+          contrast = 0.8916;
+          brightness = 0.8172;
+          vibrancy = 0.1696;
+          vibrancy_darkness = 0.0;
         }
       ];
 
       input-field = [
         {
           size = "250, 50";
-          position = "0, -20";
+          position = "0, -80";
           monitor = "";
           dots_center = true;
           fade_on_empty = false;
           font_color = "rgb(205, 214, 244)";
           inner_color = "rgb(30, 30, 46)";
-          outer_color = "rgb(180, 190, 254)";
+          outer_color = "rgb(245, 194, 231)";
           outline_thickness = 5;
-          placeholder_text = "Password...";
+          placeholder_text = "<i>Password...</i>";
           shadow_passes = 2;
+        }
+      ];
+
+      label = [
+        # ЧАСЫ
+        {
+          text = "$TIME";
+          color = "rgb(205, 214, 244)";
+          font_size = 85;
+          font_family = "JetBrains Mono Nerd Font ExtraBold";
+          position = "0, 100";
+          halign = "center";
+          valign = "center";
+        }
+        # ПРИВЕТСТВИЕ
+        {
+          text = "Hi, $USER";
+          color = "rgb(205, 214, 244)";
+          font_size = 20;
+          font_family = "JetBrains Mono Nerd Font";
+          position = "0, 0";
+          halign = "center";
+          valign = "center";
         }
       ];
     };
