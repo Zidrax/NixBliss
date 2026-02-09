@@ -48,7 +48,6 @@
     rofi-calc           # Калькулятор в Rofi
     rofi-emoji          # Эмодзи пикер
     #hyprpicker          # Пипетка цвета
-    hyprpaper           # Обои (если не запускаешь демоном)
     kitty
 
     # --- Игры ---
@@ -529,7 +528,7 @@
 
       exec-once = [
         "Throne"
-        "waybar & hyprpaper"
+        "waybar"
         "[workspace 10] $terminal"
         "[workspace 1] obsidian"
         "sleep 2 && hyprctl dispatch exec \"[workspace 2]\" firefox"
@@ -684,15 +683,15 @@
     enable = true;
     settings = {
       general = {
-        no_fade_in = false;
+        no_fade_in = true;
         grace = 0;
         disable_loading_bar = true;
       };
 
       background = [
         {
-          path = "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"; # Твой путь к обоям
-          blur_passes = 2; # Сила размытия (0 - выкл)
+          path = "${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg";
+          blur_passes = 2;
           blur_size = 7;
           noise = 0.0117;
           contrast = 0.8916;
@@ -709,27 +708,40 @@
           monitor = "";
           dots_center = true;
           fade_on_empty = false;
+          
+          # ТЕКСТ (Белый, как fg-col в Rofi)
           font_color = "rgb(205, 214, 244)";
-          inner_color = "rgb(30, 30, 46)";
-          outer_color = "rgb(245, 194, 231)";
-          outline_thickness = 5;
+          
+          # ФОН ПОЛЯ (Темно-серый, как bg-alt в Rofi)
+          inner_color = "rgb(49, 50, 68)";
+          
+          # РАМКА (Оранжевый, как border-col в Rofi)
+          outer_color = "rgb(250, 179, 135)";
+          
+          # ЦВЕТ ПРИ ПРОВЕРКЕ (Тоже оранжевый)
+          check_color = "rgb(250, 179, 135)";
+          
+          # ЦВЕТ ОШИБКИ (Красный, стандарт)
+          fail_color = "rgb(243, 139, 168)";
+
+          outline_thickness = 2; # Как border 2px в Rofi
           placeholder_text = "<i>Password...</i>";
           shadow_passes = 2;
         }
       ];
 
       label = [
-        # ЧАСЫ
+        # ЧАСЫ (Оранжевый акцент)
         {
           text = "$TIME";
-          color = "rgb(205, 214, 244)";
+          color = "rgb(250, 179, 135)"; 
           font_size = 85;
           font_family = "JetBrains Mono Nerd Font ExtraBold";
           position = "0, 100";
           halign = "center";
           valign = "center";
         }
-        # ПРИВЕТСТВИЕ
+        # ПРИВЕТСТВИЕ (Белый текст)
         {
           text = "Hi, $USER";
           color = "rgb(205, 214, 244)";
@@ -742,7 +754,7 @@
       ];
     };
   };
-
+  
   services.hyprpaper = {
     enable = true;
     settings = {
