@@ -49,6 +49,7 @@
     rofi-emoji          # Эмодзи пикер
     #hyprpicker          # Пипетка цвета
     hyprpaper           # Обои (если не запускаешь демоном)
+    kitty
 
     # --- Игры ---
     prismlauncher       # Minecraft
