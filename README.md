@@ -13,7 +13,7 @@ cd ~/dotfiles
 
 Либо клонирование по ssh:
 ```bash
-git clone git@github.com:Zidrax/NixBliss.git
+git clone git@github.com:Zidrax/NixBliss.git ~/dotfiles
 cd ~/dotfiles
 ```
 
