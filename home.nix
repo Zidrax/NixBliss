@@ -153,8 +153,8 @@
     # Если используешь Oh My Zsh
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "sudo" ];
-      theme = "robbyrussell"; # Или та, которая у тебя сейчас
+      plugins = [ "git" "sudo" "python" "docker"];
+      theme = "robbyrussell";
     };
   };
 
