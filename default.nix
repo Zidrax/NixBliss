@@ -170,7 +170,7 @@
   # --- Пользователи и права ---
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" ];
     hashedPassword = lib.mkDefault null;
     shell = pkgs.zsh;
   };
@@ -225,6 +225,7 @@
 
     gamemode.enable = true;
     firefox.enable = true;
+    adb.enable = true;
   };
 
   # --- Виртуализация ---
@@ -237,8 +238,8 @@
       };
     };
     
-    # waydroid.enable = true;
     incus.enable = true;
+    libvirtd.enable = true;
     lxc.lxcfs.enable = true;
   };
 
@@ -275,7 +276,7 @@
     xorg.xhost
 
     # --- Совместимость ---
-    wine winetricks
+    wine winetricks android-studio android-tools
   ];
 
   programs.nix-ld.enable = true;
