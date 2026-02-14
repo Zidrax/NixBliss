@@ -170,7 +170,7 @@
   # --- Пользователи и права ---
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel"];
     hashedPassword = lib.mkDefault null;
     shell = pkgs.zsh;
   };
@@ -320,6 +320,12 @@
 
     # Для численных вычислений
     openblas
+
+    vulkan-loader
+    libglvnd
+    mesa
+    libdrm
+    xorg.libXcomposite
   ];
 }
 
