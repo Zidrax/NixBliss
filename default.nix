@@ -176,7 +176,7 @@
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel"];
-    hashedPassword = lib.mkDefault null;
+    initialPassword = "1234";
     shell = pkgs.zsh;
   };
   

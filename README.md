@@ -27,7 +27,7 @@ sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
 
 4. Применение конфига
 
-Запусти сборку системы (заменить  имя хоста, прописанное в flake.nix в секции nixosConfigurations, когда доделаю pc.nix):
+Запусти сборку системы:
 ```bash
-sudo nixos-rebuild switch --flake .#default
+sudo nixos-rebuild switch --flake .#laptop
 ```
