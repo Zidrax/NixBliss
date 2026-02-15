@@ -45,9 +45,8 @@
     # --- Инструменты GUI ---
     nautilus            # Файловый менеджер
     gnome-tweaks        # Настройка GTK тем
-    rofi-calc           # Калькулятор в Rofi
-    rofi-emoji          # Эмодзи пикер
-    #hyprpicker          # Пипетка цвета
+    rofi-calc rofi-emoji
+    hyprpicker          # Пипетка цвета
     kitty
 
     # --- Игры ---
@@ -414,7 +413,7 @@
     enable = true;
     package = pkgs.rofi;
     extraConfig = {
-      modi = "drun,run,window";
+      modi = "drun,run,window,calc,emoji";
       show-icons = true;
       display-drun = "   "; # Иконка поиска вместо текста APPS
       drun-display-format = "{name}";
@@ -643,6 +642,9 @@
         "$mainMod SHIFT, V, exec, wl-paste > /tmp/clip_img && imv /tmp/clip_img"
         "$mainMod, I, exec, ~/.local/bin/set-sensitivity.sh"
         "$mainMod, L, exec, hyprlock"
+        "$mainMod, C, exec, rofi -show calc -modi calc -no-show-match -no-sort"
+        "$mainMod SHIFT, P, exec, hyprpicker -a"
+        "$mainMod, PERIOD, exec, rofi -show emoji -modi emoji"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
