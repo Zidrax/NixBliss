@@ -11,12 +11,13 @@
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       username = "User"; 
-      specialArgs = { inherit inputs username; };
+
     in {
       nixosConfigurations = {
         # Конфигурация для ПК
         nixos = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
+          specialArgs = { inherit inputs username; hostname = "nixos"; };
+
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; }
             ./default.nix
@@ -25,7 +26,7 @@
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs; # Оставили только эту строку
+              home-manager.extraSpecialArgs = { inherit inputs username; hostname = "nixos"; };
               home-manager.users.${username} = import ./home.nix;
               home-manager.backupFileExtension = "backup";
             }
@@ -34,7 +35,8 @@
 
         # Конфигурация для Ноутбука (на будущее)
         laptop = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
+          specialArgs = { inherit inputs username; hostname = "laptop"; };
+
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; }
             ./default.nix
@@ -42,7 +44,7 @@
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = specialArgs;
+              home-manager.extraSpecialArgs = { inherit inputs username; hostname = "laptop"; };
               home-manager.users.${username} = import ./home.nix;
               home-manager.backupFileExtension = "backup";
             }

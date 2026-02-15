@@ -259,7 +259,7 @@
   # --- Системные пакеты ---
   environment.systemPackages = with pkgs; [
     # --- Системные утилиты (CLI) ---
-    vim wget git curl unzip btop micro direnv usbutils
+    vim wget git curl unzip btop micro direnv usbutils 
     pciutils lshw file tree killall
 
     # --- Звук и Сеть ---

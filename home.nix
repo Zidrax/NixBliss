@@ -40,14 +40,16 @@
     gimp
     imv                 # Просмотрщик картинок (легкий)
     amberol             # Музыка
-    obs-studio
+    obs-studio kooha
 
     # --- Инструменты GUI ---
     nautilus            # Файловый менеджер
     gnome-tweaks        # Настройка GTK тем
-    # rofi-calc rofi-emoji
     hyprpicker          # Пипетка цвета
     kitty
+    cliphist
+    swaynotificationcenter
+    hyprshot
 
     # --- Игры ---
     prismlauncher       # Minecraft
@@ -551,6 +553,8 @@
       exec-once = [
         "Throne"
         "waybar"
+        "wl-paste --type text --watch cliphist store"
+        "wl-paste --type image --watch cliphist store"
         "[workspace 10] $terminal"
         "[workspace 1] obsidian"
         "sleep 2 && hyprctl dispatch exec \"[workspace 2]\" firefox"
@@ -648,9 +652,11 @@
         "$mainMod SHIFT, V, exec, wl-paste > /tmp/clip_img && imv /tmp/clip_img"
         "$mainMod, I, exec, ~/.local/bin/set-sensitivity.sh"
         "$mainMod, L, exec, hyprlock"
-        "$mainMod, C, exec, rofi -show calc -modi calc -no-show-match -no-sort"
+        "$mainMod SHIFT, C, exec, rofi -show calc -modi calc -no-show-match -no-sort"
+        "$mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
         "$mainMod SHIFT, P, exec, hyprpicker -a"
         "$mainMod, PERIOD, exec, rofi -show emoji -modi emoji"
+        "$mainMod, N, exec, swaync-client -t -sw"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
@@ -819,5 +825,10 @@
         }
       ];
     };
+  };
+
+  # Центр уведомлений
+  services.swaync = {
+    enable = true;
   };
 }
