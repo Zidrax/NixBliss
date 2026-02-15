@@ -104,6 +104,11 @@
 
   services.libinput.enable = true;
 
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda"; #cude - NVIDIA, rocm - AMD, null - CPU 
+  };
+
   # --- Звук ---
   services.pipewire = {
     enable = true;
