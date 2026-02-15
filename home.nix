@@ -624,13 +624,12 @@
           scroll_factor = 0.5;   # Скорость прокрутки 
           tap-to-click = true;   # Тап вместо нажатия
           clickfinger_behavior = true; # Правый клик двумя пальцами
-
-          workspace_swipe = true;         # Включает жесты смахивания
-          workspace_swipe_fingers = 4;    # Устанавливает количество пальцев (по умолчанию 3)
-          workspace_swipe_forever = true; # Позволяет листать бесконечно, а не останавливаться на краях
-
         };
       };
+
+      gesture = [
+        "4, horizontal, workspace"
+      ];
 
       bind = [
         "$mainMod, RETURN, exec, $terminal"
