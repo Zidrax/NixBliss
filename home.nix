@@ -59,6 +59,7 @@
     nixd
     pyright
     clang-tools
+    ollama
   ];
 
 
