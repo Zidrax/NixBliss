@@ -265,6 +265,9 @@
 
     initContent = ''
       zstyle ':completion:*:*:*:*' ignored-patterns '*.lock'
+      function gcommit() {
+        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита (первая строка — заголовок до 50 символов, затем пустая строка, затем описание). Без лишних слов."
+      }
     '';
 
     # Если используешь Oh My Zsh
@@ -275,6 +278,7 @@
     };
   };
 
+  # Git
   programs.git = {
     enable = true;
     
