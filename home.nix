@@ -11,7 +11,7 @@
   home.packages = with pkgs; [
     # --- Интернет и Общение ---
     chromium            # Запасной браузер
-    discord
+    # discord
     telegram-desktop
     element-desktop
     zoom-us
