@@ -45,7 +45,7 @@
     # --- Инструменты GUI ---
     nautilus            # Файловый менеджер
     gnome-tweaks        # Настройка GTK тем
-    rofi-calc rofi-emoji
+    # rofi-calc rofi-emoji
     hyprpicker          # Пипетка цвета
     kitty
 
@@ -412,6 +412,12 @@
   programs.rofi = {
     enable = true;
     package = pkgs.rofi;
+
+    plugins = with pkgs; [
+      rofi-calc
+      rofi-emoji
+    ];
+
     extraConfig = {
       modi = "drun,run,window,calc,emoji";
       show-icons = true;
