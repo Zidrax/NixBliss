@@ -268,7 +268,7 @@
     initContent = ''
       zstyle ':completion:*:*:*:*' ignored-patterns '*.lock'
       function gcommit() {
-        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита. Так, чтобы я просто скопировал твой ответ и вставил в git commit -m твой ответ. Без лишних слов."
+        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита. РОВНО ПО ШАБЛОНУ {gcmsg "сам комит"}. Без лишних слов."
       }
     '';
 
