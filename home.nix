@@ -261,12 +261,13 @@
       nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#nixos";
       ll = "ls -l";
       v = "vim";
+      llama3 = "ollama run llama3";
     };
 
     initContent = ''
       zstyle ':completion:*:*:*:*' ignored-patterns '*.lock'
       function gcommit() {
-        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита (первая строка — заголовок до 50 символов, затем пустая строка, затем описание). Без лишних слов."
+        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита. Так, чтобы я просто скопировал твой ответ и вставил в git commit -m твой ответ. Без лишних слов."
       }
     '';
 
