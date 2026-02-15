@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, ... }:
+{ config, pkgs, inputs, username, hostname, ... }:
 
 {
   home.username = username;
@@ -61,6 +61,7 @@
     pyright
     clang-tools
     ollama
+    impression
   ];
 
 
@@ -259,9 +260,7 @@
 
     # Твои алиасы (сокращения команд)
     shellAliases = {
-      nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#nixos";
-      ll = "ls -l";
-      v = "vim";
+      nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#${hostname}";
       llama3 = "ollama run llama3";
     };
 
