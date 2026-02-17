@@ -62,6 +62,7 @@
     clang-tools
     ollama
     impression
+    termscp termius
     docker docker-compose lazydocker
     dockerfile-language-server yaml-language-server
   ];
