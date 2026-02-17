@@ -62,7 +62,8 @@
     clang-tools
     ollama
     impression
-    docker docker-compose lazydocker dockerfile-language-server
+    docker docker-compose lazydocker 
+    dockerfile-language-server yaml-language-server
   ];
 
 
@@ -151,7 +152,7 @@
 
       -- 5. LSP
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local servers = { 'pyright', 'nixd', 'clangd', 'dockerls' }
+      local servers = { 'pyright', 'nixd', 'clangd', 'dockerls', 'yamlls' }
 
       -- Функция для добавления дефолтных конфигов из lspconfig в vim.lsp.config
       -- Это хак для clean setup на unstable версиях
