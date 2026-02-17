@@ -62,7 +62,7 @@
     clang-tools
     ollama
     impression
-    docker lazydocker
+    docker lazydocker dockerfile-language-server
   ];
 
 
@@ -149,12 +149,9 @@
         indent = { enable = true },
       }
 
-      -- 5. LSP (ФИКС ДЛЯ NEOVIM 0.11)
-      -- Мы больше не делаем require('lspconfig').setup, это вызывает ошибку.
-      -- Мы используем нативный vim.lsp.enable
-      
+      -- 5. LSP
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local servers = { 'pyright', 'nixd', 'clangd' }
+      local servers = { 'pyright', 'nixd', 'clangd', 'dockerls' }
 
       -- Функция для добавления дефолтных конфигов из lspconfig в vim.lsp.config
       -- Это хак для clean setup на unstable версиях
