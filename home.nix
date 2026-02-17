@@ -62,7 +62,7 @@
     clang-tools
     ollama
     impression
-    docker lazydocker dockerfile-language-server
+    docker docker-compose lazydocker dockerfile-language-server
   ];
 
 
