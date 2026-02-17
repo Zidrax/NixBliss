@@ -62,7 +62,7 @@
     clang-tools
     ollama
     impression
-    docker docker-compose lazydocker 
+    docker docker-compose lazydocker
     dockerfile-language-server yaml-language-server
   ];
 
@@ -785,6 +785,23 @@
           valign = "center";
         }
       ];
+    };
+  };
+
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+
+    matchBlocks = {
+      "pi" = {
+        hostname = "192.168.50.42";
+        user = "user";
+        # Агент (чтобы ключи для гитхаба с ПК работали на устройсте)
+        forwardAgent = true; 
+      };
+      "*" = {
+        # serverAliveInterval = 60;
+      };
     };
   };
   
