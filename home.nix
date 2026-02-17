@@ -62,6 +62,7 @@
     clang-tools
     ollama
     impression
+    docker lazydocker
   ];
 
 
