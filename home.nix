@@ -37,6 +37,7 @@
     imv                 # Просмотрщик картинок (легкий)
     amberol             # Музыка
     obs-studio kooha
+    scrcpy
 
     # --- Инструменты GUI ---
     nautilus            # Файловый менеджер
