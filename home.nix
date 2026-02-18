@@ -257,6 +257,7 @@
     shellAliases = {
       nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#${hostname}";
       llama3 = "ollama run llama3";
+      phone = "scrcpy --video-codec=h264 --video-bit-rate=16M --audio-codec=opus --audio-buffer=0 --video-buffer=0 --stay-awake --power-off-on-close";
     };
 
     initContent = ''

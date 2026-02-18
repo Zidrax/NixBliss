@@ -178,7 +178,7 @@
   # --- Пользователи и права ---
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel" ];
     initialPassword = "1234";
     shell = pkgs.zsh;
   };
