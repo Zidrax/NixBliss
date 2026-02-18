@@ -7,14 +7,11 @@
 
   programs.home-manager.enable = true;
 
-  # Твои пользовательские пакеты (те, что не нужны всей системе)
   home.packages = with pkgs; [
     # --- Интернет и Общение ---
     chromium            # Запасной браузер
     # discord
-    telegram-desktop
-    element-desktop
-    zoom-us
+    telegram-desktop element-desktop zoom-us
     networkmanager_dmenu brightnessctl pamixer blueman
     throne
 
@@ -33,7 +30,6 @@
     libreoffice
     homebank            # Учет финансов
     xournalpp           # Рукописные заметки
-    glow                # Markdown в терминале
     apostrophe          # Markdown редактор
 
     # --- Графика и Медиа ---
@@ -48,7 +44,6 @@
     hyprpicker          # Пипетка цвета
     kitty
     cliphist
-    swaynotificationcenter
     hyprshot
 
     # --- Игры ---
@@ -655,7 +650,6 @@
         "$mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
         "$mainMod SHIFT, P, exec, hyprpicker -a"
         "$mainMod, PERIOD, exec, rofi -show emoji -modi emoji"
-        "$mainMod, N, exec, swaync-client -t -sw"
 
         # Переключение воркспейсов
         "$mainMod, 1, workspace, 1"
@@ -841,10 +835,5 @@
         }
       ];
     };
-  };
-
-  # Центр уведомлений
-  services.swaync = {
-    enable = true;
   };
 }
