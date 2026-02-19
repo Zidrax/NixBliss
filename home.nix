@@ -108,6 +108,8 @@
       vim.opt.clipboard = "unnamedplus"
       vim.opt.termguicolors = true
       vim.opt.undofile = true
+
+      vim.g.mapleader = " "
       
       -- Таймер автосейва (миллисекунды)
       vim.opt.updatetime = 500
@@ -210,6 +212,19 @@
 
       -- 9. RAINBOW DELIMITERS
       require('rainbow-delimiters.setup').setup { }
+
+      -- 10. Keybinds
+      vim.keymap.set('n', '<space>e', function() 
+        vim.diagnostic.open_float({ 
+          border = "rounded", 
+          source = "always", 
+          header = "" 
+        }) 
+      end, { desc = "Показать текст ошибки с рамкой" })
+      vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Предыдущая ошибка" })
+      vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Следующая ошибка" })
+
+      
     '';
 
   };
