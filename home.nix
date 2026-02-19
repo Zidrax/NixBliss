@@ -813,23 +813,6 @@
     };
   };
 
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false;
-
-    matchBlocks = {
-      "pi" = {
-        hostname = "192.168.50.42";
-        user = "user";
-        # Агент (чтобы ключи для гитхаба с ПК работали на устройсте)
-        forwardAgent = true; 
-      };
-      "*" = {
-        # serverAliveInterval = 60;
-      };
-    };
-  };
-  
   services.hyprpaper = {
     enable = true;
     settings = {
@@ -864,6 +847,34 @@
           on-timeout = "pidof hyprlock && systemctl suspend"; 
         }
       ];
+    };
+  };
+
+
+  # Kitty
+  programs.kitty = {
+    enable = true;
+    settings = {
+      background_opacity = "0.8"; # Уровень прозрачности (от 0.0 до 1.0)
+      dynamic_background_opacity = true; # Позволяет менять прозрачность на лету
+    };
+  };
+
+
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+
+    matchBlocks = {
+      "pi" = {
+        hostname = "192.168.50.42";
+        user = "user";
+        # Агент (чтобы ключи для гитхаба с ПК работали на устройсте)
+        forwardAgent = true; 
+      };
+      "*" = {
+        # serverAliveInterval = 60;
+      };
     };
   };
 }
