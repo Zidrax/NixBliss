@@ -61,6 +61,7 @@
     termscp termius
     docker docker-compose lazydocker
     dockerfile-language-server yaml-language-server
+    ripgrep
   ];
 
 
@@ -95,6 +96,11 @@
       # --- Утилиты ---
       nvim-autopairs        # Авто-скобки
       comment-nvim          # Быстрое комментирование (gcc)
+
+
+      telescope-nvim        # Поиск (панель действий)
+      plenary-nvim          # Зависимость для telescope
+      toggleterm-nvim       # Удобный терминал
     ];
 
     extraLuaConfig = ''
@@ -224,7 +230,39 @@
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Предыдущая ошибка" })
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Следующая ошибка" })
 
+      -- 11. TELESCOPE
+      local builtin = require('telescope.builtin')
       
+      -- Ctrl+Shift+P: Панель команд (все действия)
+      -- Примечание: В некоторых терминалах C-S-p может быть занят, 
+      -- если не сработает, попробуй настроить hotkey в Kitty.
+      vim.keymap.set('n', '<C-S-p>', builtin.commands, { desc = "Панель команд" })
+      
+      -- Поиск файлов (как Ctrl+P в VS Code)
+      vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = "Поиск файлов" })
+      
+      -- Поиск текста во всем проекте (Live Grep)
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = "Поиск текста в файлах" }) 
+
+      -- 12. TOGGLETERM (Встроенный терминал)
+      require("toggleterm").setup({
+        size = 20,
+        open_mapping = [[<C-`>]], -- Тот самый Ctrl + `
+        direction = 'float',      -- Всплывающее окно (можно сменить на 'horizontal')
+        float_opts = {
+          border = 'rounded',
+        },
+      })
+
+      -- Функция для быстрого запуска Python файла
+      function _run_python()
+        local file = vim.fn.expand("%")
+        -- Используем uv run, так как ты работаешь с ним
+        vim.cmd("TermExec cmd='uv run " .. file .. "'")
+      end
+
+      -- Привязываем запуск на <leader>r (пробел + r)
+      vim.keymap.set('n', '<leader>r', '<cmd>lua _run_python()<CR>', { desc = "Запустить Python файл" })
     '';
 
   };
