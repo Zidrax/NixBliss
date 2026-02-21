@@ -272,13 +272,17 @@
 
 
       # Библиотеки X11 (находятся в xorg)
+      xorg.libXi
+      xorg.libSM
+      xorg.libxcb
+      xorg.libICE
       xorg.libX11
       xorg.libXcursor
       xorg.libXext
-      xorg.libXi
       xorg.libXrender
       xorg.libXrandr
       xorg.libXinerama
+
 
       # Для численных вычислений
       openblas
