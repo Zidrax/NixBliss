@@ -16,7 +16,7 @@
     throne
 
     # --- Dev ---
-    vscode antigravity
+    vscode # antigravity
     dbeaver-bin         # Data bases
     sqlitebrowser
     sqlite

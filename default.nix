@@ -308,7 +308,7 @@
     
     incus.enable = true;
     libvirtd.enable = true;
-    lxc.lxcfs.enable = true;
+    # lxc.lxcfs.enable = true;
   };
 
 
