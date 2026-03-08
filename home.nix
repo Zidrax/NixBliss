@@ -15,6 +15,7 @@
     networkmanager_dmenu brightnessctl pamixer blueman
     throne
 
+
     # ---- Dev ----
     vscode # antigravity
     dbeaver-bin         # Data bases
@@ -25,37 +26,41 @@
     gcc cmake gnumake   # C/C++ сборка
     arduino-ide
 
+
     # ---- CTF ----
 
     # Сеть и Разведка (Network & OSINT)
     nmap                # Классический и самый мощный сканер сети
     rustscan            # Очень быстрый сканер портов на Rust (работает в паре с nmap)
-    netcat-gnu          # Классический швейцарский нож для реверс-шеллов
-    socat               # Прокачанная версия netcat
-    metasploit          # Главный фреймворк для эксплуатации уязвимостей
-    wireshark
+    # netcat-gnu          # Классический швейцарский нож для реверс-шеллов
+    # socat               # Прокачанная версия netcat
+    # metasploit          # Главный фреймворк для эксплуатации уязвимостей
+    # wireshark
+    # gospider            # веб-паук, который вытаскивает вообще все ссылки, эндпоинты API и пути к скриптам из HTML и JS файлов сайта.
+    #waybackurls         # вытаскивает все старые и новые ссылки целевого домена
 
     # Веб-уязвимости (Web Exploitation)
-    burpsuite           # Главный инструмент для перехвата и модификации веб-запросов
-    sqlmap              # Автоматизация поиска и эксплуатации SQL-инъекций
-    ffuf                # Быстрый фаззер для поиска скрытых директорий и файлов
-    nikto               # Сканер веб-серверов на известные уязвимости
+    # burpsuite           # Главный инструмент для перехвата и модификации веб-запросов
+    # sqlmap              # Автоматизация поиска и эксплуатации SQL-инъекций
+    # ffuf                # Быстрый фаззер для поиска скрытых директорий и файлов
+    # nikto               # Сканер веб-серверов на известные уязвимости
+    # feroxbuster         # быстрый фаззер директорий на Rust.
 
     # Реверс-инжиниринг и Pwn (Reverse Engineering)
-    ghidra              # Мощнейший комбайн для реверса от АНБ
-    radare2             # Фреймворк для реверса прямо из консоли
-    gdb                 # Дебаггер (рекомендую потом накатить на него плагин GEF или pwndbg)
+    #ghidra              # Мощнейший комбайн для реверса от АНБ
+    #radare2             # Фреймворк для реверса прямо из консоли
+    #gdb                 # Дебаггер (рекомендую потом накатить на него плагин GEF или pwndbg)
 
     # Криптография и Пароли (Crypto & Cracking)
-    hashcat             # Самый быстрый взломщик хэшей
-    john                # John the Ripper (особенно хорош для взлома архивов/ssh ключей)
+    #hashcat             # Самый быстрый взломщик хэшей
+    #john                # John the Ripper (особенно хорош для взлома архивов/ssh ключей)
 
     # Форензика и Стеганография (Forensics & Stego)
-    binwalk             # Анализ и извлечение данных из прошивок и бинарников
-    exiftool            # Анализ метаданных файлов
-    steghide            # Поиск скрытых данных в картинках и аудио
-    zsteg
-    pngcheck
+    #binwalk             # Анализ и извлечение данных из прошивок и бинарников
+    #exiftool            # Анализ метаданных файлов
+    #steghide            # Поиск скрытых данных в картинках и аудио
+    #zsteg
+    #pngcheck
 
 
     # ---- Офис и Заметки ----
@@ -65,12 +70,14 @@
     xournalpp           # Рукописные заметки
     apostrophe          # Markdown редактор
 
+
     # ---- Графика и Медиа ----
     gimp
     imv                 # Просмотрщик картинок (легкий)
     amberol             # Музыка
     obs-studio kooha
     scrcpy
+
 
     # ---- Инструменты GUI ----
     nautilus            # Файловый менеджер
@@ -79,6 +86,7 @@
     kitty
     cliphist
     hyprshot
+
 
     # ---- Игры ----
     prismlauncher       # Minecraft
@@ -358,6 +366,7 @@
       nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#${hostname}";
       llama3 = "ollama run llama3";
       phone = "scrcpy --video-codec=h264 --video-bit-rate=16M --audio-codec=opus --audio-buffer=0 --video-buffer=0 --stay-awake --power-off-on-close";
+      CTF = "NIXPKGS_ALLOW_UNFREE=1 nix-shell -p nmap rustscan netcat-gnu socat metasploit wireshark burpsuite sqlmap ffuf feroxbuster nikto ghidra radare2 hashcat john binwalk exiftool steghide zsteg gospider waybackurls pngcheck --run zsh";
     };
 
     initContent = ''
