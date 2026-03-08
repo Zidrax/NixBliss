@@ -15,7 +15,7 @@
     networkmanager_dmenu brightnessctl pamixer blueman
     throne
 
-    # --- Dev ---
+    # ---- Dev ----
     vscode # antigravity
     dbeaver-bin         # Data bases
     sqlitebrowser
@@ -25,21 +25,54 @@
     gcc cmake gnumake   # C/C++ сборка
     arduino-ide
 
-    # --- Офис и Заметки ---
+    # ---- CTF ----
+
+    # Сеть и Разведка (Network & OSINT)
+    nmap                # Классический и самый мощный сканер сети
+    rustscan            # Очень быстрый сканер портов на Rust (работает в паре с nmap)
+    netcat-gnu          # Классический швейцарский нож для реверс-шеллов
+    socat               # Прокачанная версия netcat
+    metasploit          # Главный фреймворк для эксплуатации уязвимостей
+    wireshark
+
+    # Веб-уязвимости (Web Exploitation)
+    burpsuite           # Главный инструмент для перехвата и модификации веб-запросов
+    sqlmap              # Автоматизация поиска и эксплуатации SQL-инъекций
+    ffuf                # Быстрый фаззер для поиска скрытых директорий и файлов
+    nikto               # Сканер веб-серверов на известные уязвимости
+
+    # Реверс-инжиниринг и Pwn (Reverse Engineering)
+    ghidra              # Мощнейший комбайн для реверса от АНБ
+    radare2             # Фреймворк для реверса прямо из консоли
+    gdb                 # Дебаггер (рекомендую потом накатить на него плагин GEF или pwndbg)
+
+    # Криптография и Пароли (Crypto & Cracking)
+    hashcat             # Самый быстрый взломщик хэшей
+    john                # John the Ripper (особенно хорош для взлома архивов/ssh ключей)
+
+    # Форензика и Стеганография (Forensics & Stego)
+    binwalk             # Анализ и извлечение данных из прошивок и бинарников
+    exiftool            # Анализ метаданных файлов
+    steghide            # Поиск скрытых данных в картинках и аудио
+    zsteg
+    pngcheck
+
+
+    # ---- Офис и Заметки ----
     obsidian
     libreoffice
     homebank            # Учет финансов
     xournalpp           # Рукописные заметки
     apostrophe          # Markdown редактор
 
-    # --- Графика и Медиа ---
+    # ---- Графика и Медиа ----
     gimp
     imv                 # Просмотрщик картинок (легкий)
     amberol             # Музыка
     obs-studio kooha
     scrcpy
 
-    # --- Инструменты GUI ---
+    # ---- Инструменты GUI ----
     nautilus            # Файловый менеджер
     gnome-tweaks        # Настройка GTK тем
     hyprpicker          # Пипетка цвета
@@ -47,7 +80,7 @@
     cliphist
     hyprshot
 
-    # --- Игры ---
+    # ---- Игры ----
     prismlauncher       # Minecraft
     lutris
     protonup-qt         # Установка Proton-GE для Steam
@@ -909,6 +942,10 @@
         user = "user";
         # Агент (чтобы ключи для гитхаба с ПК работали на устройсте)
         forwardAgent = true; 
+
+        # Аналог флага -Y (Trusted X11 Forwarding)
+        forwardX11 = true;
+        forwardX11Trusted = true;
       };
       "*" = {
         # serverAliveInterval = 60;

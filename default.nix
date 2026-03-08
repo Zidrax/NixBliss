@@ -105,6 +105,12 @@
       xkb.layout = "us";
     };
 
+    avahi = {
+      enable = true;
+      nssmdns4 = true; # Позволяет системе разрешать .local адреса
+      openFirewall = true; # Автоматически открывает нужные порты в вашем firewall 
+    };
+
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = true;
     desktopManager.gnome.enable = true;
@@ -178,7 +184,7 @@
   # --- Пользователи и права ---
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" "input" "incus-admin" "dialout" "uucp" "kvm" "adbusers" "libvirtd" "kvm-intel" "wireshark"];
     initialPassword = "1234";
     shell = pkgs.zsh;
   };
