@@ -56,7 +56,8 @@ in
 pkgs.mkShell {
   name = "ctf-env";
 
-  packages = with pkgs; [
+  packages = with pkgs; 
+  [
     ctf-help
     jq
     
@@ -77,7 +78,10 @@ pkgs.mkShell {
     hashcat john binwalk exiftool steghide zsteg pngcheck
 
     sonic-visualiser
-    python313
+    ffmpeg audacity
+    python313 python313Packages.pip
+    snow cyberchef
+
   ];
 
   shellHook = ''
@@ -87,7 +91,6 @@ pkgs.mkShell {
 
     hyprctl dispatch tagwindow ctf > /dev/null
 
-    # 2. При выходе (exit) вызываем ту же команду, чтобы снять тег
     trap "hyprctl dispatch tagwindow ctf > /dev/null" EXIT
 
     # Задаем путь, где логично хранить словари
