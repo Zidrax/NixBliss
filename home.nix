@@ -333,6 +333,7 @@
       llama3 = "ollama run llama3";
       phone = "scrcpy --video-codec=h264 --video-bit-rate=16M --audio-codec=opus --audio-buffer=0 --video-buffer=0 --stay-awake --power-off-on-close";
       CTF = "nix-shell ~/dotfiles/shells/ctf-shell.nix --run zsh";
+      discord = "NIXPKGS_ALLOW_UNFREE=1 nix-shell -p discord --run 'discord > /dev/null 2>&1 & disown'";
     };
 
     initContent = ''
