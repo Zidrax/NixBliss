@@ -58,6 +58,7 @@ pkgs.mkShell {
 
   packages = with pkgs; [
     ctf-help
+    jq
     
     # Сеть, Wi-Fi и OSINT
     nmap rustscan netcat-gnu socat metasploit gospider waybackurls aircrack-ng responder
@@ -74,6 +75,9 @@ pkgs.mkShell {
     
     # Крипта и Форензика
     hashcat john binwalk exiftool steghide zsteg pngcheck
+
+    sonic-visualiser
+    python313
   ];
 
   shellHook = ''
@@ -81,22 +85,10 @@ pkgs.mkShell {
 
     echo -e "\n\033[1;31m\tРежим CTF активирован. \033[1;36mctf-help\033[0m для просмотра арсенала.\n"
 
-    # # 1. Запрашиваем ширину терминала у системы
-    # cols=$(tput cols 2>/dev/null || echo 80)
-    # 
-    # # 2. Ширина рамки теперь компактная — 44 символа
-    # box_width=44
-    # 
-    # # 3. Высчитываем отступ слева
-    # pad_len=$(( (cols - box_width) / 2 ))
-    # [ $pad_len -lt 0 ] && pad_len=0
-    # pad=$(printf '%*s' "$pad_len" "")
-    # 
-    # # 4. Рисуем плотный отцентрированный UI
-    # echo -e "\n$pad\033[1;31m╭──────────────────────────────────────────╮\033[0m"
-    # echo -e "$pad\033[1;31m│\033[0m         \033[1;31m💀 Режим CTF активирован\033[0m         \033[1;31m│\033[0m"
-    # echo -e "$pad\033[1;31m│\033[0m   Введи \033[1;36mctf-help\033[0m для просмотра арсенала  \033[1;31m│\033[0m"
-    # echo -e "$pad\033[1;31m╰──────────────────────────────────────────╯\033[0m\n"
+    hyprctl dispatch tagwindow ctf > /dev/null
+
+    # 2. При выходе (exit) вызываем ту же команду, чтобы снять тег
+    trap "hyprctl dispatch tagwindow ctf > /dev/null" EXIT
 
     # Задаем путь, где логично хранить словари
     # export SECLISTS=~/wordlists/SecLists

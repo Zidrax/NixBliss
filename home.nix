@@ -27,6 +27,7 @@
     gcc cmake gnumake   # C/C++ сборка
     arduino-ide
     pyright
+    imhex
 
 
     # ---- Офис и Заметки ----
@@ -342,7 +343,8 @@
 
       # --- Индикатор CTF режима (Справа в терминале) ---
       if [[ -n "$CTF_MODE" ]]; then
-        RPROMPT="%F{red}💀 CTF%f" 
+        # RPROMPT="%F{red}💀 CTF%f" 
+
       fi
     '';
 
@@ -651,6 +653,10 @@
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
       };
+
+      windowrulev2 = [
+        "bordercolor rgba(ffb3b3ee) rgba(f7a8b8ee) 45deg, tag:ctf"
+      ];
 
       decoration = {
         rounding = 10;
