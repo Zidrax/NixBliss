@@ -47,6 +47,7 @@
       "vm.dirty_ratio" = 10;
       "vm.watermark_scale_factor" = 200;
       "net.ipv4.ip_forward" = 1;
+      "kernel.unprivileged_userns_clone" = 1;
     };
 
     # extraModulePackages = with config.boot.kernelPackages; [ virtualbox ];
@@ -313,6 +314,11 @@
       };
     };
     
+    podman = {
+      enable = true;
+      dockerCompat = false; # Ставим false, чтобы не конфликтовать с командой 'docker'
+    };
+
     incus.enable = true;
     libvirtd.enable = true;
     # lxc.lxcfs.enable = true;
