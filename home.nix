@@ -777,6 +777,7 @@
       wallpaper = [
         "DP-1,${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
         "HDMI-A-1,${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
+        ",${config.home.homeDirectory}/Pictures/Wallpaper/wl1.jpg"
       ];
     };
   };
