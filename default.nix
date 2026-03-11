@@ -265,6 +265,7 @@
       readline
       sqlite
       glib
+      musl
       libxml2
       libxslt
 

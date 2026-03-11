@@ -93,6 +93,9 @@ pkgs.mkShell {
     python313 
     python313Packages.pip
     python313Packages.pycryptodome
+
+    # Распределить
+    pycdc
   ];
 
   shellHook = ''
