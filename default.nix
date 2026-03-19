@@ -42,7 +42,7 @@
     # Настройки swap
     kernel.sysctl = {
       "vm.swappiness" = 5;
-      "vm.vfs_cache_pressure" = 500;
+      "vm.vfs_cache_pressure" = 100;
       "vm.dirty_background_ratio" = 5;
       "vm.dirty_ratio" = 10;
       "vm.watermark_scale_factor" = 200;
@@ -55,6 +55,7 @@
 
   # --- Аппаратное обеспечение ---
   hardware = {
+    cpu.intel.updateMicrocode = true;
     # NVIDIA
     nvidia = {
       open = true; # ВАЖНО - для старых карт поменять на false 
@@ -65,7 +66,7 @@
         finegrained = false;
       };
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
     
     # Графика
@@ -206,11 +207,16 @@
     
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 5000 27036 27037 ];
+      allowedTCPPorts = [ 3000 5000 8000 27036 27037 ];
       
-      # Объединяем все UDP порты здесь:
+      # Добавляем диапазоны для игр Valve
+      allowedUDPPortRanges = [
+        { from = 27000; to = 27020; } # Основной игровой трафик
+        { from = 27021; to = 27050; } # Дополнительные сервисы и поиск
+      ];
+
       allowedUDPPorts = [ 
-        27031 27036 4380          # Steam порты
+        27031 27036 4380
       ];
     };
 

@@ -28,6 +28,7 @@
     arduino-ide
     pyright
     imhex
+    codex
 
 
     # ---- Офис и Заметки ----
@@ -210,16 +211,25 @@
                 theharvester gospider sqlmap ffuf feroxbuster nikto wpscan commix wireshark \
                 netexec evil-winrm ghidra openjdk-21-jdk radare2 gdb python3-pwntools ltrace strace \
                 hashcat john binwalk libimage-exiftool-perl steghide pngcheck \
-                sonic-visualiser ffmpeg audacity python3-pip ruby-full build-essential"
+                sonic-visualiser ffmpeg audacity python3-pip ruby-full build-essential npm"
 
               echo "💎 Доустанавливаю zsteg и sherlock..."
               distrobox enter ctf-box -- sh -c "sudo gem install zsteg && sudo pip3 install sherlock-project --break-system-packages"
 
               echo "🖌️ Фикс 'белого окна' внутри контейнера..."
               echo 'export _JAVA_AWT_WM_NONREPARENTING=1' >> ~/distrobox/ctf/.zshrc
-              
+
               echo "🔐 Автоматический фикс прав для $USER..."
+              sudo mkdir -p ~/distrobox/ctf/.config/nvim
               sudo chown -R ''${USER}:users ~/distrobox/ctf
+
+              echo "📦 Настройка Neovim..."
+              # Копируем созданный портативный конфиг
+              cp ~/dotfiles/home/terminal/nvim/portable.lua ~/distrobox/ctf/.config/nvim/init.lua
+
+              echo "✅ Neovim готов! При первом запуске он сам скачает плагины."
+              
+              
               echo "✅ Все настроено!"
               ;;
             --stop)
@@ -503,7 +513,7 @@
       "$menu" = "rofi -show drun";
 
       monitor = [
-        "DP-1,preferred,auto,1"
+        "DP-1,2560x1440@120,auto,1"
         "HDMI-A-1,preferred,auto,1.333333"
       ];
 
@@ -600,7 +610,7 @@
         kb_layout = "us, ru";
         kb_options = "grp:win_space_toggle";
         follow_mouse = 1;
-        sensitivity = -0.5;
+        sensitivity = -1;
 
         touchpad = {
           natural_scroll = true; # "Естественная" прокрутка
