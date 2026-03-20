@@ -7,148 +7,6 @@
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    # --- Интернет и Общение ---
-    chromium            # Запасной браузер
-    tor-browser
-    telegram-desktop element-desktop zoom-us
-    networkmanager_dmenu brightnessctl pamixer blueman
-    throne
-    nmap
-
-
-    # ---- Dev ----
-    vscode
-    dbeaver-bin         # Data bases
-    sqlitebrowser
-    sqlite
-    nodejs_20
-    uv                  # Python tools
-    gcc cmake gnumake   # C/C++ сборка
-    arduino-ide
-    pyright
-    imhex
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.codex
-    github-cli
-
-
-    # ---- Офис и Заметки ----
-    obsidian
-    libreoffice
-    homebank            # Учет финансов
-    xournalpp           # Рукописные заметки
-    apostrophe          # Markdown редактор
-
-
-    # ---- Графика и Медиа ----
-    gimp
-    imv                 # Просмотрщик картинок (легкий)
-    amberol             # Музыка
-    obs-studio kooha
-    scrcpy
-
-
-    # ---- Инструменты GUI ----
-    nautilus            # Файловый менеджер
-    gnome-tweaks        # Настройка GTK тем
-    hyprpicker          # Пипетка цвета
-    kitty
-    cliphist
-    hyprshot
-
-
-    # ---- Игры ----
-    prismlauncher       # Minecraft
-    lutris
-    protonup-qt         # Установка Proton-GE для Steam
-    steam-run           # Запуск любых бинарников
-
-    nixd
-    clang-tools
-    ollama
-    impression
-    termscp termius
-    docker docker-compose lazydocker
-    dockerfile-language-server yaml-language-server
-    ripgrep
-    distrobox
-  ];
-
-
-  # NVim
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-
-    # Ставим плагины через Nix (воспроизводимость!)
-    plugins = with pkgs.vimPlugins; [
-      # --- UI и Внешний вид ---
-      gruvbox-nvim          # Твоя тема, но на Lua
-      lualine-nvim          # Замена airline
-      nvim-web-devicons     # Иконки для файлов
-      nvim-tree-lua         # Замена NERDTree
-      rainbow-delimiters-nvim
-
-      # --- Основа (LSP и Treesitter) ---
-      nvim-treesitter.withAllGrammars  # Умная подсветка для всего
-      nvim-lspconfig        # Настройки LSP серверов
-
-      # --- Автодополнение (Замена CoC) ---
-      nvim-cmp              # Движок автодополнения
-      cmp-nvim-lsp          # Источник: LSP
-      cmp-buffer            # Источник: слова из буфера
-      cmp-path              # Источник: пути к файлам
-      luasnip               # Сниппеты (нужны для cmp)
-      cmp_luasnip
-
-      # --- Утилиты ---
-      nvim-autopairs        # Авто-скобки
-      comment-nvim          # Быстрое комментирование (gcc)
-
-
-      telescope-nvim        # Поиск (панель действий)
-      plenary-nvim          # Зависимость для telescope
-      toggleterm-nvim       # Удобный терминал
-    ];
-
-    extraLuaConfig = builtins.readFile ./home/terminal/nvim/init.lua;
-  };
-
-  # Firefix  
-  programs.firefox = {
-    enable = true;
-    profiles.User = {
-      isDefault = true;
-
-      settings = {
-        # --- ВОССТАНОВЛЕНИЕ СЕССИИ (Твои вкладки) ---
-        "browser.startup.page" = 3;               # 3 = Восстанавливать предыдущую сессию
-        "browser.startup.homepage" = "about:blank"; # Новое окно всё равно будет чистым
-
-        # --- ПАРОЛИ (Раз ты ими пользуешься) ---
-        "signon.rememberSignons" = true;          # Вернул возможность сохранять пароли
-
-        # --- МИНИМАЛИЗМ (Оставляем как было) ---
-        "browser.newtabpage.enabled" = false;
-        "extensions.pocket.enabled" = false;
-        "browser.tabs.firefox-view" = false;
-        "browser.aboutConfig.showWarning" = false;
-
-        "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.vpn_promo.enabled" = false;
-        "browser.promo.focus.enabled" = false;
-
-        "places.history.enabled" = true;
-        "browser.shell.checkDefaultBrowser" = false;
-        "datareporting.healthreport.uploadEnabled" = false;
-      };
-    };
-  };
-
   xdg.desktopEntries = {
     telemost = {
       name = "Yandex Telemost";
@@ -160,107 +18,7 @@
       comment = "Запустить Телемост как отдельное приложение";
     };
   };
-
-
-  # Zsh
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    # Твои алиасы
-    shellAliases = {
-      nix-switch = "sudo nixos-rebuild switch --flake ~/dotfiles#${hostname}";
-      llama3 = "ollama run llama3";
-      phone = "scrcpy --video-codec=h264 --video-bit-rate=16M --audio-codec=opus --audio-buffer=0 --video-buffer=0 --stay-awake --power-off-on-close";
-      # CTF = "nix-shell ~/dotfiles/shells/ctf-shell.nix --run zsh";
-      discord = "NIXPKGS_ALLOW_UNFREE=1 nix-shell -p discord --run 'discord > /dev/null 2>&1 & disown'";
-    };
-
-    initContent = ''
-      export ZSH_DISABLE_COMPFIX="true"
-      zstyle ':completion:*:*:*:*' ignored-patterns '*.lock' 
-      function gcommit() {
-        git diff --cached | ollama run llama3 "Ты — генератор git commit сообщений. Проанализируй этот diff и напиши ТОЛЬКО сообщение коммита. РОВНО ПО ШАБЛОНУ gcmsg "сам комит" (ковычки обязательны). Без лишних слов."
-      }
-
-      # Умная функция для CTF-контейнера
-      CTF() {
-        # Фикс белого окна Java в Hyprland
-        export _JAVA_AWT_WM_NONREPARENTING=1
-        
-        # Если аргументов нет — просто заходим
-        if [[ $# -eq 0 ]]; then
-          distrobox enter ctf-box
-          return
-        fi
-
-        # Цикл по всем аргументам
-        for arg in "$@"; do
-          case "$arg" in
-            --create)
-              echo "🛠️ Создаю изолированный контейнер ctf-box..."
-              mkdir -p ~/distrobox/ctf
-              distrobox create --image kalilinux/kali-rolling --name ctf-box --home ~/distrobox/ctf
-              ;;
-            --setup)
-              echo "🚀 Установка арсенала (тихий режим)..."
-              # Основной софт + Java для Гидры
-              distrobox enter ctf-box -- sh -c "sudo DEBIAN_FRONTEND=noninteractive apt update && sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-                kali-linux-headless zsh nmap netcat-openbsd socat metasploit-framework aircrack-ng responder \
-                theharvester gospider sqlmap ffuf feroxbuster nikto wpscan commix wireshark \
-                netexec evil-winrm ghidra openjdk-21-jdk radare2 gdb python3-pwntools ltrace strace \
-                hashcat john binwalk libimage-exiftool-perl steghide pngcheck \
-                sonic-visualiser ffmpeg audacity python3-pip ruby-full build-essential npm"
-
-              echo "💎 Доустанавливаю zsteg и sherlock..."
-              distrobox enter ctf-box -- sh -c "sudo gem install zsteg && sudo pip3 install sherlock-project --break-system-packages"
-
-              echo "🖌️ Фикс 'белого окна' внутри контейнера..."
-              echo 'export _JAVA_AWT_WM_NONREPARENTING=1' >> ~/distrobox/ctf/.zshrc
-
-              echo "🔐 Автоматический фикс прав для $USER..."
-              sudo mkdir -p ~/distrobox/ctf/.config/nvim
-              sudo chown -R ''${USER}:users ~/distrobox/ctf
-
-              echo "📦 Настройка Neovim..."
-              # Копируем созданный портативный конфиг
-              cp ~/dotfiles/home/terminal/nvim/portable.lua ~/distrobox/ctf/.config/nvim/init.lua
-
-              echo "✅ Neovim готов! При первом запуске он сам скачает плагины."
-              
-              
-              echo "✅ Все настроено!"
-              ;;
-            --stop)
-              distrobox stop ctf-box ;;
-            --restart)
-              distrobox stop ctf-box && distrobox enter ctf-box ;;
-            --rm)
-              distrobox rm ctf-box ;;
-            --help|-h)
-              echo -e "💀 \033[1;31mCTF ARSENAL\033[0m 💀"
-              echo "Использование: CTF --create --setup"
-              ;;
-          esac
-        done
-      }
-
-      # --- Индикатор CTF режима (Справа в терминале) ---
-      if [[ -n "$CTF_MODE" ]]; then
-        # RPROMPT="%F{red}💀 CTF%f" 
-
-      fi
-    '';
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" "sudo" "python" "docker"];
-      theme = "robbyrussell";
-    };
-  };
-
+  
   # Git
   programs.git = {
     enable = true;
@@ -388,7 +146,7 @@
       };
     };
 
-    style = builtins.readFile ./waybar/style.css;
+    style = builtins.readFile ../../waybar/style.css;
   };
 
   #Rofi
@@ -496,12 +254,12 @@
 
   home.file.".local/bin/powermenu.sh" = {
     executable = true;
-    source = ./scripts/powermenu.sh;
+    source = ../../scripts/powermenu.sh;
   };
 
   home.file.".local/bin/set-sensitivity.sh" = {
     executable = true;
-    source = ./scripts/set-sensitivity.sh;
+    source = ../../scripts/set-sensitivity.sh;
   };
 
   # Hyprland
@@ -844,3 +602,4 @@
     };
   };
 }
+

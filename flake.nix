@@ -24,14 +24,12 @@
 
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; }
-            ./default.nix
-            ./hardware-configuration.nix
-            ./pc-only.nix
+            ./hosts/nixos/default.nix
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit inputs username; hostname = "nixos"; };
-              home-manager.users.${username} = import ./home.nix;
+              home-manager.users.${username} = import ./profiles/home/common.nix;
               home-manager.backupFileExtension = "backup";
             }
             {
@@ -42,23 +40,22 @@
           ];
         };
 
-        # Конфигурация для Ноутбука (на будущее)
+        # Конфигурация для Ноутбука
         laptop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs username nixpkgs-unstable; hostname = "laptop"; };
 
-          modules = [
-            { nixpkgs.hostPlatform = "x86_64-linux"; }
-            ./default.nix
-            ./hardware-configuration.nix
-            home-manager.nixosModules.home-manager {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs username; hostname = "laptop"; };
-              home-manager.users.${username} = import ./home.nix;
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
-        };
+        modules = [
+          { nixpkgs.hostPlatform = "x86_64-linux"; }
+          ./hosts/laptop/default.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs username; hostname = "laptop"; };
+            home-manager.users.${username} = import ./profiles/home/common.nix;
+            home-manager.backupFileExtension = "backup";
+          }
+        ];
       };
     };
+  };
 }
