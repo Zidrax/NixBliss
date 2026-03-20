@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, hostname, ... }:
+{ ... }:
 
 {
   # Firefix  
@@ -34,5 +34,16 @@
     };
   };
 
+  xdg.desktopEntries = {
+    telemost = {
+      name = "Yandex Telemost";
+      genericName = "Video Conferencing";
+      exec = "chromium --app=https://telemost.yandex.ru";
+      icon = "yandex-browser"; # Или "video-display", если иконка не подтянется
+      terminal = false;
+      categories = [ "Network" "VideoConference" ];
+      comment = "Запустить Телемост как отдельное приложение";
+    };
+  };
 }
 

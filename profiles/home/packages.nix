@@ -1,12 +1,6 @@
-{ config, pkgs, inputs, username, ... }:
+{ pkgs, inputs, ... }:
 
 {
-  home.username = username;
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion = "25.11";
-
-  programs.home-manager.enable = true;
-
   home.packages = with pkgs; [
     # --- Интернет и Общение ---
     chromium            # Запасной браузер

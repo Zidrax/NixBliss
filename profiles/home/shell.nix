@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, hostname, ... }:
+{ hostname, ... }:
 
 {
   # Zsh
@@ -100,5 +100,13 @@
     };
   };
 
+  # Kitty
+  programs.kitty = {
+    enable = true;
+    settings = {
+      background_opacity = "0.8"; # Уровень прозрачности (от 0.0 до 1.0)
+      dynamic_background_opacity = true; # Позволяет менять прозрачность на лету
+    };
+  };
 }
 

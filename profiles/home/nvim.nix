@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, username, hostname, ... }:
+{ pkgs, ... }:
 
 {
   # NVim
