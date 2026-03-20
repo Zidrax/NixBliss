@@ -29,6 +29,7 @@
     pyright
     imhex
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.codex
+    github-cli
 
 
     # ---- Офис и Заметки ----
