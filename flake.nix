@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     antigravity-nix = {
@@ -11,7 +12,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, antigravity-nix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, antigravity-nix, ... }@inputs:
     let
       username = "User"; 
 
@@ -19,7 +20,7 @@
       nixosConfigurations = {
         # Конфигурация для ПК
         nixos = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs username; hostname = "nixos"; };
+          specialArgs = { inherit inputs username nixpkgs-unstable; hostname = "nixos"; };
 
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; }
@@ -43,7 +44,7 @@
 
         # Конфигурация для Ноутбука (на будущее)
         laptop = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs username; hostname = "laptop"; };
+          specialArgs = { inherit inputs username nixpkgs-unstable; hostname = "laptop"; };
 
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; }

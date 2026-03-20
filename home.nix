@@ -10,7 +10,7 @@
   home.packages = with pkgs; [
     # --- Интернет и Общение ---
     chromium            # Запасной браузер
-    # discord
+    tor-browser
     telegram-desktop element-desktop zoom-us
     networkmanager_dmenu brightnessctl pamixer blueman
     throne
@@ -28,7 +28,7 @@
     arduino-ide
     pyright
     imhex
-    codex
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.codex
 
 
     # ---- Офис и Заметки ----
